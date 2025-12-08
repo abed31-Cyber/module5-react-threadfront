@@ -1,5 +1,6 @@
-const { useState } = require("react")
 
+import { useState } from "react"
+// filepath: /home/user/module5-react-threadfront/thread-front/src/components/Register.jsx
 
 // Composant pour afficher le message d'erreur
 function MessageError() {
@@ -10,7 +11,7 @@ function MessageError() {
 export default function Register() {
 
     // États pour stocker les valeurs des champs du formulaire
-    const [pseudoUser, setPseudo] = useState("");
+    const [pseudoUser, setPseudoUser] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
