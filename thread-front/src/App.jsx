@@ -2,7 +2,8 @@
 import './App.css'
 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import { Profile } from './components/Profile.jsx'
+import Profile from './components/profile/Profile.jsx'
+import Commentary from './components/comment/comment.jsx'
 import Register from './components/Register.jsx'
 import HomePage from './components/HomePage.jsx'
 import Login from './components/Login.jsx'
@@ -16,6 +17,7 @@ function App() {
       <nav>
        <Link to="/">Accueil</Link>
        <Link to="/profile">profile</Link>
+       <Link to="/comment">test comment</Link>
       </nav>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -23,6 +25,7 @@ function App() {
           <Route path="/Login" element={<Login/>}/>
           <Route path="/register" element={<Register />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/comment" element={<Commentary />}/>
         </Routes>
       </BrowserRouter>
     </>
