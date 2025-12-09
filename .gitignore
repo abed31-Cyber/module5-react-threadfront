@@ -1,1 +1,7 @@
+# Dependencies
 thread-front/node_modules/
+back/node_modules/
+
+# Build outputs
+thread-front/dist/
+back/build/
