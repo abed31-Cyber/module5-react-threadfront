@@ -2,27 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const PostCard = ({ post }) => {
-  // Format date to readable format
+  // Format date: HH:MM - DD Month YY (comme dans l'image)
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now - date) / 1000);
     
-    if (diffInSeconds < 60) {
-      return `${diffInSeconds}s`;
-    } else if (diffInSeconds < 3600) {
-      return `${Math.floor(diffInSeconds / 60)}min`;
-    } else if (diffInSeconds < 86400) {
-      return `${Math.floor(diffInSeconds / 3600)}h`;
-    } else if (diffInSeconds < 604800) {
-      return `${Math.floor(diffInSeconds / 86400)}j`;
-    } else {
-      return date.toLocaleDateString('fr-FR', { 
-        day: 'numeric', 
-        month: 'short', 
-        year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined 
-      });
-    }
+    // Format time: HH:MM (sans secondes)
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const timeString = `${hours}:${minutes}`;
+    
+    // Format date: DD Month YY
+    const day = String(date.getDate()).padStart(2, '0');
+    const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const month = months[date.getMonth()];
+    const year = String(date.getFullYear()).slice(-2); // Seulement les 2 derniers chiffres
+    const formattedDate = `${day} ${month} ${year}`;
+    
+    return `${timeString} - ${formattedDate}`;
   };
 
   // Get initials from author name
@@ -39,8 +35,6 @@ const PostCard = ({ post }) => {
   const author = post.User?.username || post.author || 'Anonyme';
   const content = post.content;
   const createdAt = post.createdAt;
-  const likes = post.likes || 0;
-  const comments = post.Comments?.length || post.comments || 0;
 
   return (
     <div className="post-card">
@@ -50,7 +44,6 @@ const PostCard = ({ post }) => {
         </div>
         <div className="post-author-info">
           <h3 className="post-author">{author}</h3>
-          <span className="post-date">{formatDate(createdAt)}</span>
         </div>
       </div>
       
@@ -58,15 +51,8 @@ const PostCard = ({ post }) => {
         {content}
       </div>
       
-      <div className="post-stats">
-        <div className="post-stat">
-          <span className="post-stat-label">Commentaires:</span>
-          <span>{comments}</span>
-        </div>
-        <div className="post-stat">
-          <span className="post-stat-label">Likes:</span>
-          <span>{likes}</span>
-        </div>
+      <div className="post-footer">
+        <span className="post-date">{formatDate(createdAt)}</span>
       </div>
     </div>
   );

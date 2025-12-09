@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PostCard from './PostCard.jsx';
 import './feed.css';
 import AuthContext from '../../../context/AuthContext.jsx';
@@ -6,6 +7,7 @@ import AuthContext from '../../../context/AuthContext.jsx';
 
 const Feed = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -183,6 +185,30 @@ const Feed = () => {
            Vous avez vu tous les posts.
         </div>
       )}
+
+      {/* Navigation Buttons */}
+      <div className="bottom-navigation">
+        <button 
+          className="nav-button create-button" 
+          onClick={() => navigate('/createpost')}
+          aria-label="Créer un post"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+        <button 
+          className="nav-button profile-button" 
+          onClick={() => navigate('/profile')}
+          aria-label="Profil"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </button>
+      </div>
     </div>
   );
 };
