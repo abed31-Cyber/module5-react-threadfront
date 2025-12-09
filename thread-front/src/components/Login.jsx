@@ -4,7 +4,6 @@ import "./Login.css";
 export default function Login() {
     const [email, setEmail] = useState ("");
     const [password, setPassWord] = useState ("");
-    // const [error, setError] = useState("");
     const handleSubmit = (email) => {
         email.preventDefault();
         console.log("Email", email);
