@@ -107,3 +107,39 @@
     border-radius: 12px;
   }
 }
+
+/* New Post Form */
+.post-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-form textarea {
+  background-color: #1a1a1a;
+  color: white;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 12px;
+}
+
+.post-form button {
+  background-color: #1d9bf0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.2s;
+}
+
+.post-form button:hover {
+  background-color: #1a8cd8;
+}

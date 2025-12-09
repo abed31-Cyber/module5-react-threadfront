@@ -1,6 +1,6 @@
 
 import './App.css'
-
+import AuthContext from '../context/AuthContext.jsx'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Profile } from './components/Profile.jsx'
 import Register from './components/Register.jsx'
@@ -16,6 +16,8 @@ function App() {
       <nav>
        <Link to="/">Accueil</Link>
        <Link to="/profile">profile</Link>
+       <Link to="/feed">feed</Link>
+       
       </nav>
         <Routes>
           <Route path="/" element={<HomePage />} />
