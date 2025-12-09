@@ -1,0 +1,109 @@
+/* Feed Container */
+.feed-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+  min-height: 1000vh;
+  background-color: black;
+  color: white;
+}
+
+.feed-header {
+  padding: 20px 20px;
+  margin-bottom: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.feed-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Post Card Styles */
+.post-card {
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 16px;
+  transition: background-color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.post-date {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.post-content {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.error-message {
+  color: #f4212e;
+  font-size: 16px;
+  padding: 20px;
+  background-color: rgba(244, 33, 46, 0.1);
+  border-radius: 12px;
+  margin: 20px 16px;
+  border: 1px solid rgba(244, 33, 46, 0.3);
+}
+
+.retry-button {
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-top: 12px;
+}
+
+/* Bottom Navigation (visible in screenshot) */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  z-index: 200;
+}
+
+.nav-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .feed-container {
+    max-width: 100%;
+  }
+
+  .post-card {
+    margin: 12px 12px;
+    padding: 16px;
+    border-radius: 12px;
+  }
+}
