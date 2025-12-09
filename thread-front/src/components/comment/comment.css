@@ -1,0 +1,8 @@
+.comment {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    background: #b0acac;
+    font-size: 30px;
+    background: linear-gradient(90deg, rgba(176, 172, 172, 1) 0%, rgba(119, 122, 120, 1) 52%, rgba(128, 128, 124, 1) 100%);
+}
