@@ -1,0 +1,33 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-family: "Josefin Sans", sans-serif;
+    height: 100vh;
+    padding: 40px;
+}*
+h1,h2,h3,h4,h5 {
+    font-size: 40px;
+    margin-bottom: 40px;
+}
+.connecter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 300px;
+}
+input {
+   border: none; 
+   border-radius: 3px;
+   background: rgb(0, 0, 0);
+   color: rgb(228, 224, 224);
+   font-size: 1.7rem;
+   padding: 10px 14px;
+}
