@@ -35,7 +35,12 @@ const PostCard = ({ post }) => {
     return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
   };
 
-  const { author, content, createdAt, likes = 0, comments = 0 } = post;
+  // Adapter les données de l'API au format attendu
+  const author = post.User?.username || post.author || 'Anonyme';
+  const content = post.content;
+  const createdAt = post.createdAt;
+  const likes = post.likes || 0;
+  const comments = post.Comments?.length || post.comments || 0;
 
   return (
     <div className="post-card">
@@ -44,7 +49,7 @@ const PostCard = ({ post }) => {
           {getInitials(author)}
         </div>
         <div className="post-author-info">
-          <h3 className="post-author">{author || 'Anonyme'}</h3>
+          <h3 className="post-author">{author}</h3>
           <span className="post-date">{formatDate(createdAt)}</span>
         </div>
       </div>
@@ -55,11 +60,11 @@ const PostCard = ({ post }) => {
       
       <div className="post-stats">
         <div className="post-stat">
-          <span className="post-stat-icon"></span>
+          <span className="post-stat-label">Commentaires:</span>
           <span>{comments}</span>
         </div>
         <div className="post-stat">
-          <span className="post-stat-icon"></span>
+          <span className="post-stat-label">Likes:</span>
           <span>{likes}</span>
         </div>
       </div>
@@ -70,10 +75,14 @@ const PostCard = ({ post }) => {
 PostCard.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    User: PropTypes.shape({
+      username: PropTypes.string,
+    }),
     author: PropTypes.string,
     content: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
     likes: PropTypes.number,
+    Comments: PropTypes.array,
     comments: PropTypes.number,
   }).isRequired,
 };
