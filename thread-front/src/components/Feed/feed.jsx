@@ -9,6 +9,11 @@ const Feed = () => {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef(null);  
+  const loadMoreRef = useRef(null);
+  const POSTS_PER_PAGE = 10;
+  const API_BASE_URL = 'http://localhost:3000';
   const [error, setError] = useState(null);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
@@ -17,12 +22,25 @@ const Feed = () => {
     setLoading(true);
     setError(null);
     // appel de l'API pour récupérer les posts 
-    try {
+      try {
       const response = await fetch(`${API_BASE_URL}/posts`);
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);
       }
       const data = await response.json();
+
+      
+      if (data.length === 0 || data.length < POSTS_PER_PAGE) {
+        setHasMore(false);
+      }
+
+      setPosts((prevPosts) => {
+        // Avoid duplicates
+        const newPosts = data.filter(
+          (newPost) => !prevPosts.some((post) => post.id === newPost.id)
+        );
+        return [...prevPosts, ...newPosts];
+      });
       setPosts(data);
     } catch (err) {
       setError(err.message || 'Une erreur est survenue, Mimine est passée par là ! Fuyez');
@@ -39,6 +57,10 @@ const Feed = () => {
   // Gestion de la tentative de rechargement en cas d'erreur
   const handleRetry = () => {
     setPosts([]);
+
+    setPage(1);
+    setHasMore(true);
+    fetchPosts(1);
     setError(null);
     fetchPosts();
   };

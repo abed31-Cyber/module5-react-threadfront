@@ -3,6 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
 export default function Login() {
+
+    const [email, setEmail] = useState ("");
+    const [password, setPassWord] = useState ("");
+    const handleSubmit = (email) => {
+        email.preventDefault();
+        console.log("Email", email);
+        console.log("Mot de pass :", password);
+        alert("Formulaire Envoyer !");
     const [email, setEmail] = useState("");
     const [password, setPassWord] = useState("");
     const [error, setError] = useState("");
