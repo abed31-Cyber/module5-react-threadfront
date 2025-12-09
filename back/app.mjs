@@ -146,7 +146,16 @@ async function main() {
         app.get("/posts", async (req, res) => {
             try {
                 const posts = await Post.findAll({
-                    include: [{ association: "Comments" }]
+                    include: [{ 
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }, {
+                        association: "Comments",
+                        include: [{
+                            association: "User",
+                            attributes: ["id", "username"]
+                        }]
+                    }]
                 });
                 if (!posts) {
                     res.status(404).json({ message: "Erreur lors de la récupération des Posts" });
@@ -156,7 +165,33 @@ async function main() {
                 }
                 res.status(200).json(posts);
             } catch (error) {
-                res.status(500).json({ comment: "Erreur serveur" });
+                res.status(500).json({ message: "Erreur serveur" });
+            }
+        });
+
+        // ----Récupération d'un post par ID
+
+        app.get("/posts/:postId", async (req, res) => {
+            try {
+                const post = await Post.findByPk(req.params.postId, {
+                    include: [{
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }, {
+                        association: "Comments",
+                        include: [{
+                            association: "User",
+                            attributes: ["id", "username"]
+                        }]
+                    }]
+                });
+                if (!post) {
+                    return res.status(404).json({ message: "Post non trouvé" });
+                }
+                res.status(200).json(post);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ message: "Erreur serveur" });
             }
         });
 
@@ -184,11 +219,33 @@ async function main() {
                 }
                 // si l'utilisateur n'est pas le créateur du post et n'est pas admin, on refuse l'accès
                 if (post.userId !== req.user.id && req.user.role !== "admin") {
-                    return res.status(404).json({ message: "Accès refusé" });
+                    return res.status(403).json({ message: "Accès refusé" });
                 }
                 // suppression du post
                 await post.destroy();
                 res.status(200).json({ message: "Post supprimé avec succès" });
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ message: "Erreur serveur" });
+            }
+        });
+
+        // ----Modification d'un post------
+        app.put("/posts/:postId", authenticate, async (req, res) => {
+            try {
+                const post = await Post.findByPk(req.params.postId);
+                if (!post) {
+                    return res.status(404).json({ message: "Post non trouvé" });
+                }
+                // Vérifier que l'utilisateur est le créateur ou admin
+                if (post.userId !== req.user.id && req.user.role !== "admin") {
+                    return res.status(403).json({ message: "Accès refusé" });
+                }
+                // Mettre à jour les champs
+                if (req.body.title) post.title = req.body.title;
+                if (req.body.content) post.content = req.body.content;
+                await post.save();
+                res.status(200).json({ message: "Post modifié avec succès", post });
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ message: "Erreur serveur" });

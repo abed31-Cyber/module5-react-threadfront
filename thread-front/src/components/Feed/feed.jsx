@@ -6,7 +6,6 @@ const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const observerRef = useRef(null);  
   const loadMoreRef = useRef(null);
@@ -19,7 +18,6 @@ const Feed = () => {
     if (loading) return;
     
     setLoading(true);
-    setError(null);
 
     try {
       const response = await fetch(
@@ -43,9 +41,6 @@ const Feed = () => {
         );
         return [...prevPosts, ...newPosts];
       });
-    } catch (err) {
-      setError(err.message || 'Une erreur est survenue, Mimine est passée par là ! Fuyez');
-      console.error('Erreur lors du fetch, Mimine n\'est pas loin:', err);
     } finally {
       setLoading(false);
     }
@@ -93,7 +88,6 @@ const Feed = () => {
     setPosts([]);
     setPage(1);
     setHasMore(true);
-    setError(null);
     fetchPosts(1);
   };
 
