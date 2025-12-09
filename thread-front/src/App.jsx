@@ -17,7 +17,6 @@ function App() {
       <nav>
        <Link to="/">Accueil</Link>
        <Link to="/profile">profile</Link>
-       <Link to="/comment">test comment</Link>
       </nav>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -25,7 +24,6 @@ function App() {
           <Route path="/Login" element={<Login/>}/>
           <Route path="/register" element={<Register />} />
           <Route path="/feed" element={<Feed />} />
-          <Route path="/comment" element={<Commentary />}/>
         </Routes>
       </BrowserRouter>
     </>
