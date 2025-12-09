@@ -1,47 +1,69 @@
+import { useState } from "react";
 
-import { useState } from "react"
-// filepath: /home/user/module5-react-threadfront/thread-front/src/components/Register.jsx
-
-// Composant pour afficher le message d'erreur
-function MessageError() {
-    return <p style={{ color: 'red' }}>Les mots de passe ne correspondent pas !</p>;
+function MessageError({ message }) {
+    return <p style={{ color: 'red' }}>{message}</p>;
 }
-
-// Composant principal d'enregistrement de l'utilisateur
+// Composant d'enregistrement d'un nouvel utilisateur
 export default function Register() {
-
-    // États pour stocker les valeurs des champs du formulaire
     const [pseudoUser, setPseudoUser] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
-    // Fonction de gestion de la soumission du formulaire qui empeche le rechargement de la page
-    const handlesubmit = (e) => {
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+    // je gère la soumission du formulaire pour eviter le rechargement de la page
+    const handlesubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
+        // je vérifie que les mots de passe correspondent
+        if (password !== confirmPassword) {
+            setError("Les mots de passe ne correspondent pas !");
+            return;
+        }
+        // j'envoie les données au serveur pour créer un nouveau compte en utilisant fetch
         try {
-            if (password !== confirmPassword) {
-                throw new Error("Passwords do not match");
+            const res = await fetch("http://localhost:3000/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: pseudoUser,
+                    email,
+                    password,
+                    role: "User"
+                }),
+                credentials: "include" // pour les cookies JWT
+            });
+            // je traite la réponse du serveur pour afficher un message de succès ou d'erreur
+            const data = await res.json();
+            // si la réponse est ok, le compte est créé avec succès
+            if (res.ok) {
+                setSuccess("Compte créé avec succès !");
+                setPseudoUser("");
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+            } else {
+                setError(data.message || "Erreur lors de la création du compte");
             }
         } catch (error) {
-            console.error(error);
+            console.error("Erreur lors de la création du compte :", error);
+            setError("Erreur serveur");
         }
-    }
-    // Retourne le rendu du formulaire d'enregistrement
-    return (
+    };
 
+    return (
         <div>
             <h2>Création de compte</h2>
-
-            {confirmPassword && password !== confirmPassword ? <MessageError /> : null}
+            {error && <MessageError message={error} />}
+            {success && <p style={{ color: 'green' }}>{success}</p>}
             <form onSubmit={handlesubmit}>
-                <input type="pseudo" placeholder="@Pseudo" value={pseudoUser} onChange={e => setPseudoUser(e.target.value)} />
-                <input type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
-                <input type="password" placeholder="mot de passe" value={password} onChange={e => setPassword(e.target.value)} />
-                <input type="password" placeholder="mot de passe encore" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                <input type="text" placeholder="@Pseudo" value={pseudoUser} onChange={e => setPseudoUser(e.target.value)} required />
+                <input type="email" placeholder="email" value={email} onChange={e => setEmail(e.target.value)} required />
+                <input type="password" placeholder="mot de passe" value={password} onChange={e => setPassword(e.target.value)} required />
+                <input type="password" placeholder="mot de passe encore" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
                 <button type="submit">Créer un compte</button>
             </form>
         </div>
     );
-
 }
