@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function Profile() {
+export default function Profile() {
   const [userName, setUsername] = useState("");
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
