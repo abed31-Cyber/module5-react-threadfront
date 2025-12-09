@@ -127,16 +127,16 @@ async function main() {
         app.post("/posts", authenticate, async (req, res) => {
             try {
                 if (!req.body || !req.body.title || !req.body.content) {
-                    res.status(404).json({ message: "Pour créer un post, un titre et un contenu est requis" });
+                    return res.status(404).json({ message: "Pour créer un post, un titre et un contenu est requis" });
                 }
                 await Post.create({
                     "title": req.body.title,
                     "content": req.body.content,
                     "userId" : req.user.id
                 });
-                res.status(201).json({ message: "Post crée avec succées" })
+                return res.status(201).json({ message: "Post crée avec succées" });
             } catch (error) {
-                res.status(500).json({ message: "Erreur serveur" });
+                return res.status(500).json({ message: "Erreur serveur" });
             }
         });
 
@@ -158,12 +158,12 @@ async function main() {
                     }]
                 });
                 if (!posts) {
-                    res.status(404).json({ message: "Erreur lors de la récupération des Posts" });
+                    return res.status(404).json({ message: "Erreur lors de la récupération des Posts" });
                 }
                 if (posts.length <= 0) {
-                    res.status(404).json({ message: "Aucun Post" });
+                    return res.status(404).json({ message: "Aucun Post" });
                 }
-                res.status(200).json(posts);
+                return res.status(200).json(posts);
             } catch (error) {
                 res.status(500).json({ message: "Erreur serveur" });
             }
@@ -192,6 +192,7 @@ async function main() {
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ message: "Erreur serveur" });
+                return res.status(500).json({ comment: "Erreur serveur" });
             }
         });
 
