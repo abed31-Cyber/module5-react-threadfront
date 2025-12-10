@@ -6,23 +6,24 @@ import './post.css';
 export default function PostList({ currentUserId, currentUserRole, refreshTrigger }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const fetchPosts = async () => {
+    const loadPosts = async () => {
         setLoading(true);
+        setError(null);
         try {
-            const response = await fetch('http://localhost:3000/posts');
-            if (!response.ok) {
-                throw new Error('Erreur lors de la récupération des posts');
-            }
-            const data = await response.json();
+            const data = await fetchPosts();
             setPosts(data);
+        } catch (err) {
+            setError('Erreur lors de la récupération des posts');
+            console.error('Error loading posts:', err);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchPosts();
+        loadPosts();
     }, [refreshTrigger]);
 
     const handlePostDelete = async (id) => {
@@ -31,6 +32,7 @@ export default function PostList({ currentUserId, currentUserRole, refreshTrigge
             setPosts(posts.filter((post) => post.id !== id));
         } catch (error) {
             console.error('Failed to delete post:', error);
+            setError('Erreur lors de la suppression du post');
         }
     };
 

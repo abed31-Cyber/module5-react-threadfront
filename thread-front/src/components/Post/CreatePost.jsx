@@ -3,7 +3,6 @@ import { createPost } from '../../api/posts';
 import './post.css';
 
 const CreatePost = ({ onPostCreated }) => {
-    const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -14,17 +13,16 @@ const CreatePost = ({ onPostCreated }) => {
         setError('');
         setSuccess('');
 
-        if (!title.trim() || !content.trim()) {
-            setError('Le titre et le contenu sont obligatoires');
+        if (!content.trim()) {
+            setError('Le contenu est obligatoire');
             return;
         }
 
         setLoading(true);
 
         try {
-            const newPost = await createPost({ title, content });
+            const newPost = await createPost({ content });
             setSuccess('Post créé avec succès!');
-            setTitle('');
             setContent('');
 
             if (onPostCreated) {
@@ -55,23 +53,13 @@ const CreatePost = ({ onPostCreated }) => {
                 {success && <div className="success-message">{success}</div>}
 
                 <div className="form-group">
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Tapez votre post ici ..."
-                        disabled={loading}
-                        className="title-input"
-                    />
-                </div>
-
-                <div className="form-group">
                     <textarea
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         placeholder="Tapez votre post ici ..."
                         disabled={loading}
                         className="content-textarea"
+                        rows="6"
                     />
                 </div>
 
