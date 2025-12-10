@@ -1,0 +1,44 @@
+/* Styles basiques pour la page Profile */
+.profile-container {
+  background: #1a1a1a;
+  color: #fff;
+  min-height: 100vh;
+  padding: 24px;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.post {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-content {
+  color: #ddd;
+  margin-bottom: 8px;
+}
+
+.post-actions button {
+  margin-left: 8px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.edit-form .edit-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #333;
+  color: #fff;
+  border: 1px solid #444;
+}

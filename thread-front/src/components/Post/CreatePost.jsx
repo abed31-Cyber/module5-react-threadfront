@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { createPost } from '../../api/posts';
+import { useNavigate } from 'react-router-dom';
 import './post.css';
 
 const CreatePost = ({ onPostCreated }) => {
+    const navigate = useNavigate();
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -28,6 +30,8 @@ const CreatePost = ({ onPostCreated }) => {
             if (onPostCreated) {
                 onPostCreated(newPost);
             }
+
+            navigate('/'); // Redirection après la création du post
         } catch (error) {
             setError('Erreur lors de la création du post');
             console.error('Failed to create post:', error);
@@ -68,6 +72,7 @@ const CreatePost = ({ onPostCreated }) => {
                 <button type="submit" disabled={loading} className="submit-btn">
                     {loading ? 'En cours...' : 'Poster !'}
                 </button>
+             
             </form>
         </div>
     );
