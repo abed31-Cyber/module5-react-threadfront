@@ -8,10 +8,12 @@
 }
 
 .post {
-  background: #2a2a2a;
+
+  background: linear-gradient(135deg, #0a0a0a 0%, #464242 100%);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;
+ 
 }
 
 .post-header {

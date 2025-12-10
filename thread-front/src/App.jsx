@@ -21,7 +21,9 @@ function App() {
       </nav> */}
         <Routes>
           <Route path="/" element={<Feed />} />
-          <Route path="/profile" element={<><Profile /><button onClick={logout}>Déconnexion</button></>} />
+          <Route path="/profile" element={<><Profile /><button onClick={logout} aria-label="Déconnexion">
+  <img src="/src/assets/icons/logout.svg" alt="Déconnexion" width="24" height="24" />
+</button></>} />
           <Route path="/Login" element={<Login/>}/>
           <Route path="/register" element={<Register />} />
           <Route path="/createpost" element={<CreatePost />} />
