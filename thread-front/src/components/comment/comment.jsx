@@ -7,7 +7,7 @@ export default function Commentary({ userNameProps, commentaryProps }) {
     const [showConfirm, setShowConfirm] = useState(false);
 
     useEffect(() => {
-        setUsername(userNameProps ?? "Utilisateur supprimé/inconnu");
+        setUsername(userNameProps ?? "Utilisateur inexistant");
         setComment(
             commentaryProps ??
             { id: 0, content: "message par défaut", createdAt: new Date().toISOString() }
