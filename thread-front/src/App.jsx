@@ -19,6 +19,7 @@ function App() {
        <Link to="/">Accueil</Link>
        <Link to="/profile">profile</Link>
        <Link to="/feed">feed</Link>
+       <Link to="/comment">test unitaire comment</Link>
        
       </nav>
         <Routes>
@@ -28,6 +29,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/createpost" element={<CreatePost />} />
+          <Route path="/comment" element={<Commentary />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

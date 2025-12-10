@@ -1,8 +1,37 @@
 .comment {
-    color: white;
+    width: 90%;
+    max-width: 600px;
+    margin: 15px auto;
+    background: linear-gradient(145deg, #e6e6e6, #bdbdbd);
+    padding: 20px;
+    border-radius: 25px;
+    color: black;
+    font-weight: bold;
     display: flex;
     flex-direction: column;
-    background: #b0acac;
-    font-size: 30px;
-    background: linear-gradient(90deg, rgba(176, 172, 172, 1) 0%, rgba(119, 122, 120, 1) 52%, rgba(128, 128, 124, 1) 100%);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.comment h4 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.comment p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.comment button {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.comment button:hover {
+    opacity: 0.8;
 }
