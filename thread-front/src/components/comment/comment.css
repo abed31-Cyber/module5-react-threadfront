@@ -2,14 +2,15 @@
     width: 90%;
     max-width: 600px;
     margin: 15px auto;
-    background: linear-gradient(145deg, #e6e6e6, #bdbdbd);
+    background: #E4E4E4;
+    background: linear-gradient(90deg, rgba(228, 228, 228, 1) 0%, rgba(229, 229, 229, 1) 50%, rgba(150, 150, 150, 1) 100%);
     padding: 20px;
     border-radius: 25px;
     color: black;
     font-weight: bold;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .comment h4 {
