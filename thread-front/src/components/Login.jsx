@@ -57,6 +57,7 @@ export default function Login() {
                     <button type="submit">Se connecter</button>
                     <br />
                     <Link to="/register">Se créer un compte.</Link>
+                    <Link to="/feed"></Link>
                 </form>
             </div>
         );
