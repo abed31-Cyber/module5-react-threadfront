@@ -7,17 +7,17 @@ const[userName, setUsername]=useState("");
 const [comment, setComment]=useState({});
 
 function formatDate(createdAt) {
-    const dateOf = new Date(createdAt);
+    const dateOfCreation = new Date(createdAt);
 
-    let hour = dateOf.getHours();
-    let minute = dateOf.getMinutes();
+    let hour = dateOfCreation.getHours();
+    let minute = dateOfCreation.getMinutes();
     
     if (hour < 10) hour = "0" + hour;
     if (minute < 10) minute = "0" + minute;
 
-    const day = dateOf.getDate();
-    const month = dateOf.toLocaleString("fr-FR", { month: "short" });
-    const year = dateOf.getFullYear().toString().slice(2);// 2025 → 25
+    const day = dateOfCreation.getDate();
+    const month = dateOfCreation.toLocaleString("fr-FR", { month: "short" });
+    const year = dateOfCreation.getFullYear().toString().slice(2);// 2025 → 25
 
     return `${hour}:${minute} - ${day} ${month} ${year}`;
 }
