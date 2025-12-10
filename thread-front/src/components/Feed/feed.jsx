@@ -30,7 +30,8 @@ const Feed = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ content: newPostContent, user_id: user.id }),
+            credentials: 'include',
+            body: JSON.stringify({ content: newPostContent }),
         });
 
         if (!response.ok) {
@@ -48,7 +49,6 @@ const Feed = () => {
 
   useEffect(() => {
     const loadPosts = async () => {
-      console.log(' useEffect triggered - page:', page);
       setLoading(true);
       setError(null);
 
@@ -62,19 +62,16 @@ const Feed = () => {
         }
 
         const data = await response.json();
-        console.log(' Data received:', data.length, 'posts');
         
         if (data.length === 0 || data.length < POSTS_PER_PAGE) {
           setHasMore(false);
         }
 
         setPosts((prevPosts) => {
-          console.log(' setPosts called - prevPosts:', prevPosts.length, 'page:', page);
           const newPosts = data.filter(
             (newPost) => !prevPosts.some((post) => post.id === newPost.id)
           );
           const result = page === 1 ? newPosts : [...prevPosts, ...newPosts];
-          console.log(' setPosts result:', result.length);
           return result;
         });
       } catch (err) {
@@ -121,11 +118,6 @@ const Feed = () => {
     setError(null);
     setPage(1);
   };
-
-  // Debug: afficher l'état dans la console
-  console.log(' RENDER - posts:', posts.length, posts);
-  console.log(' RENDER - loading:', loading);
-  console.log(' RENDER - error:', error);
 
   return (
     <div className="feed-container">

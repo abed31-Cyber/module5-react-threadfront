@@ -3,7 +3,6 @@ import './post.css';
 
 export default function PostCard({ post, onDelete, onUpdate, currentUserId, currentUserRole }) {
     const [isEditing, setIsEditing] = useState(false);
-    const [editTitle, setEditTitle] = useState(post.title);
     const [editContent, setEditContent] = useState(post.content);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -26,6 +25,9 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
                 if (onDelete) {
                     onDelete(post.id);
                 }
+            } catch (err) {
+                setError('Erreur lors de la suppression');
+                console.error(err);
             } finally {
                 setLoading(false);
             }
@@ -35,6 +37,7 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
     const handleUpdate = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
 
         try {
             const response = await fetch(`http://localhost:3000/posts/${post.id}`, {
@@ -43,7 +46,7 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
                     'Content-Type': 'application/json'
                 },
                 credentials: 'include',
-                body: JSON.stringify({ title: editTitle, content: editContent })
+                body: JSON.stringify({ content: editContent })
             });
 
             if (!response.ok) {
@@ -55,6 +58,9 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
                 onUpdate(updatedPost.post);
             }
             setIsEditing(false);
+        } catch (err) {
+            setError('Erreur lors de la modification');
+            console.error(err);
         } finally {
             setLoading(false);
         }
@@ -66,13 +72,6 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
 
             {isEditing ? (
                 <form onSubmit={handleUpdate} className="edit-form">
-                    <input
-                        type="text"
-                        value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
-                        className="edit-input"
-                        disabled={loading}
-                    />
                     <textarea
                         value={editContent}
                         onChange={(e) => setEditContent(e.target.value)}
@@ -88,7 +87,6 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
                             type="button"
                             onClick={() => {
                                 setIsEditing(false);
-                                setEditTitle(post.title);
                                 setEditContent(post.content);
                             }}
                             disabled={loading}
@@ -101,7 +99,9 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
             ) : (
                 <>
                     <div className="post-header">
-                        <h3>{post.title}</h3>
+                        <p className="post-author">
+                            Par <strong>{post.User?.username || 'Utilisateur'}</strong>
+                        </p>
                         {canEditDelete && (
                             <div className="post-actions">
                                 <button
@@ -121,10 +121,6 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
                             </div>
                         )}
                     </div>
-
-                    <p className="post-author">
-                        Par <strong>{post.User?.username || 'Utilisateur'}</strong>
-                    </p>
 
                     <p className="post-content">{post.content}</p>
 

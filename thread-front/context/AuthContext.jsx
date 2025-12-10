@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   const login = async ({ email, password }) => {
     try {
         // appel de l'API pour authentifier l'utilisateur dans la base de données et gérer la session
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+      const res = await fetch(`http://localhost:3000/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

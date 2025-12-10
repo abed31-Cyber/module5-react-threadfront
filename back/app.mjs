@@ -126,16 +126,16 @@ async function main() {
 
         app.post("/posts", authenticate, async (req, res) => {
             try {
-                if (!req.body || !req.body.title || !req.body.content) {
-                    return res.status(404).json({ message: "Pour créer un post, un titre et un contenu est requis" });
+                if (!req.body || !req.body.content) {
+                    return res.status(400).json({ message: "Pour créer un post, un contenu est requis" });
                 }
-                await Post.create({
-                    "title": req.body.title,
+                const post = await Post.create({
                     "content": req.body.content,
                     "userId" : req.user.id
                 });
-                return res.status(201).json({ message: "Post crée avec succées" });
+                return res.status(201).json({ message: "Post créé avec succès", post });
             } catch (error) {
+                console.error(error);
                 return res.status(500).json({ message: "Erreur serveur" });
             }
         });
@@ -145,6 +145,10 @@ async function main() {
 
         app.get("/posts", async (req, res) => {
             try {
+                const page = parseInt(req.query.page) || 1;
+                const limit = parseInt(req.query.limit) || 10;
+                const offset = (page - 1) * limit;
+
                 const posts = await Post.findAll({
                     include: [{ 
                         association: "User",
@@ -155,16 +159,15 @@ async function main() {
                             association: "User",
                             attributes: ["id", "username"]
                         }]
-                    }]
+                    }],
+                    order: [['createdAt', 'DESC']],
+                    limit: limit,
+                    offset: offset
                 });
-                if (!posts) {
-                    return res.status(404).json({ message: "Erreur lors de la récupération des Posts" });
-                }
-                if (posts.length <= 0) {
-                    return res.status(404).json({ message: "Aucun Post" });
-                }
+
                 return res.status(200).json(posts);
             } catch (error) {
+                console.error(error);
                 res.status(500).json({ message: "Erreur serveur" });
             }
         });
@@ -242,8 +245,7 @@ async function main() {
                 if (post.userId !== req.user.id && req.user.role !== "admin") {
                     return res.status(403).json({ message: "Accès refusé" });
                 }
-                // Mettre à jour les champs
-                if (req.body.title) post.title = req.body.title;
+                // Mettre à jour le contenu
                 if (req.body.content) post.content = req.body.content;
                 await post.save();
                 res.status(200).json({ message: "Post modifié avec succès", post });
@@ -283,14 +285,24 @@ async function main() {
 
         app.get("/users/:userId/posts", async (req, res) => {
             try {
-                const posts = await Post.findAll({ where: { userId: req.params.userId } });
-                if (posts) {
-                    res.status(200).json(posts)
-                } else {
-                    res.status(404).json({ message: "Erreur lors de la récuperation des posts" })
-                }
+                const posts = await Post.findAll({ 
+                    where: { userId: req.params.userId },
+                    include: [{ 
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }, {
+                        association: "Comments",
+                        include: [{
+                            association: "User",
+                            attributes: ["id", "username"]
+                        }]
+                    }],
+                    order: [['createdAt', 'DESC']]
+                });
+                res.status(200).json(posts);
             } catch (error) {
-
+                console.error(error);
+                res.status(500).json({ message: "Erreur lors de la récupération des posts" });
             }
         })
 
