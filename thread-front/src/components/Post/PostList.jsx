@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchPosts, deletePost } from '../../api/posts';
 import PostCard from './PostCard';
 import './post.css';
 
@@ -24,8 +25,13 @@ export default function PostList({ currentUserId, currentUserRole, refreshTrigge
         fetchPosts();
     }, [refreshTrigger]);
 
-    const handlePostDelete = (postId) => {
-        setPosts(posts.filter(p => p.id !== postId));
+    const handlePostDelete = async (id) => {
+        try {
+            await deletePost(id);
+            setPosts(posts.filter((post) => post.id !== id));
+        } catch (error) {
+            console.error('Failed to delete post:', error);
+        }
     };
 
     const handlePostUpdate = (updatedPost) => {
