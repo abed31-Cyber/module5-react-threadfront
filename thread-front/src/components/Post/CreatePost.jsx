@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { createPost } from '../../api/posts';
 import './post.css';
 
-export default function CreatePost({ onPostCreated }) {
+const CreatePost = ({ onPostCreated }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(false);
@@ -21,28 +22,17 @@ export default function CreatePost({ onPostCreated }) {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:3000/posts', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({ title, content })
-            });
-
-            if (!response.ok) {
-                throw new Error('Erreur lors de la création du post');
-            }
-
+            const newPost = await createPost({ title, content });
             setSuccess('Post créé avec succès!');
             setTitle('');
             setContent('');
 
             if (onPostCreated) {
-                onPostCreated();
+                onPostCreated(newPost);
             }
-        } catch (err) {
-            setError(err.message);
+        } catch (error) {
+            setError('Erreur lors de la création du post');
+            console.error('Failed to create post:', error);
         } finally {
             setLoading(false);
         }
@@ -93,4 +83,6 @@ export default function CreatePost({ onPostCreated }) {
             </form>
         </div>
     );
-}
+};
+
+export default CreatePost;
