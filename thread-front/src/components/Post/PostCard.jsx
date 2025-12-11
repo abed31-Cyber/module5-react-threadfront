@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './post.css';
 
 export default function PostCard({ post, onDelete, onUpdate, currentUserId, currentUserRole }) {
@@ -6,6 +7,7 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
     const [editContent, setEditContent] = useState(post.content);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const canEditDelete = currentUserId === post.userId || currentUserRole === 'admin';
 
@@ -66,8 +68,12 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
         }
     };
 
+    const handleNavigateToDetail = () => {
+        navigate(`/posts/${post.id}`);
+    };
+
     return (
-        <div className="post-card">
+        <div className="post-card" onClick={handleNavigateToDetail} style={{ cursor: 'pointer' }}>
             {error && <div className="error-message">{error}</div>}
 
             {isEditing ? (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FeedCard from './PostCard.jsx';
+import FeedCard from './FeedCard.jsx';
 import './feed.css';
 import AuthContext from '../../../context/AuthContext.jsx';
 
