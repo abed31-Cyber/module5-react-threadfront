@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PostCard from './PostCard.jsx';
+import FeedCard from './PostCard.jsx';
 import './feed.css';
 import AuthContext from '../../../context/AuthContext.jsx';
 
@@ -155,7 +155,7 @@ const Feed = () => {
 
       <div className="posts-list">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <FeedCard key={post.id} post={post} />
         ))}
       </div>
 

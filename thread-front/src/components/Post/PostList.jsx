@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPosts, deletePost } from '../../api/posts';
-import PostCard from './PostCard';
+import FeedCard from './PostCard';
 import './post.css';
 
 export default function PostList({ currentUserId, currentUserRole, refreshTrigger }) {
@@ -55,7 +55,7 @@ export default function PostList({ currentUserId, currentUserRole, refreshTrigge
     return (
         <div className="posts-list">
             {posts.map((post) => (
-                <PostCard
+                <FeedCard
                     key={post.id}
                     post={post}
                     onDelete={handlePostDelete}
