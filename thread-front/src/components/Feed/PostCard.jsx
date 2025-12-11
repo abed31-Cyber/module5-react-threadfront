@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const PostCard = ({ post }) => {
+const FeedCard = ({ post }) => {
   // Format date: HH:MM - DD Month YY (comme dans l'image)
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -58,7 +58,7 @@ const PostCard = ({ post }) => {
   );
 };
 
-PostCard.propTypes = {
+FeedCard.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     User: PropTypes.shape({
@@ -73,4 +73,4 @@ PostCard.propTypes = {
   }).isRequired,
 };
 
-export default PostCard;
+export default FeedCard;
