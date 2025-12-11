@@ -1,13 +1,24 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './post.css';
+import CommentCard from '../comment/commentCard';
 
 export default function PostCard({ post, onDelete, onUpdate, currentUserId, currentUserRole }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(post.content);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const canEditDelete = currentUserId === post.userId || currentUserRole === 'admin';
+
+    const handleCardClick = (e) => {
+        // Empêcher la navigation si on clique sur les boutons d'édition/suppression
+        if (e.target.closest('.post-actions') || e.target.closest('.edit-form')) {
+            return;
+        }
+        navigate(`/posts/${post.id}`);
+    };
 
     const handleDelete = async () => {
         if (window.confirm('Êtes-vous sûr de vouloir supprimer ce post?')) {
@@ -67,7 +78,7 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
     };
 
     return (
-        <div className="post-card">
+        <div className="post-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
             {error && <div className="error-message">{error}</div>}
 
             {isEditing ? (
@@ -122,7 +133,9 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
                         )}
                     </div>
 
-                    <p className="post-content">{post.content}</p>
+                    <p className="post-content">
+                        {post.content}
+                    </p>
 
                     <div className="post-meta">
                         <span className="comment-count">
@@ -132,8 +145,12 @@ export default function PostCard({ post, onDelete, onUpdate, currentUserId, curr
                             {new Date(post.createdAt).toLocaleDateString('fr-FR')}
                         </span>
                     </div>
+                    
+
                 </>
             )}
         </div>
+
     );
+
 }

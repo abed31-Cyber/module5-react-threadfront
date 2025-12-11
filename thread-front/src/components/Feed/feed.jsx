@@ -155,7 +155,13 @@ const Feed = () => {
 
       <div className="posts-list">
         {posts.map((post) => (
-          <FeedCard key={post.id} post={post} />
+          <div
+            key={post.id}
+            onClick={() => navigate(`/posts/${post.id}`)}
+            style={{ cursor: 'pointer' }}
+          >
+            <FeedCard post={post} />
+          </div>
         ))}
       </div>
 

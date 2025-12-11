@@ -1,13 +1,15 @@
 /* Styles basiques pour la page Profile */
+body{
+  background-color: #302d2d;
+}
 .profile-container {
-  background: #1a1a1a;
   color: #fff;
   min-height: 100vh;
   padding: 24px;
   font-family: 'Josefin Sans', sans-serif;
 }
 
-.post {
+.post-item {
 
   background: linear-gradient(135deg, #0a0a0a 0%, #464242 100%);
   border-radius: 12px;
@@ -43,4 +45,17 @@
   background: #333;
   color: #fff;
   border: 1px solid #444;
+}
+
+.feed-button{
+  display: flex;
+  align-items: center;
+  
+}
+
+.bottom-nav{
+  display: flex;
+  justify-content: space-between;
+
+ 
 }
