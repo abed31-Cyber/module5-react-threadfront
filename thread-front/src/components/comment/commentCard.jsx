@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./comment.css";
 
-export default function Commentary({ userNameProps, commentaryProps }) {
+export default function CommentCard({ userNameProps, commentaryProps }) {
     const [userName, setUsername] = useState("");
     const [comment, setComment] = useState({});
     const [showConfirm, setShowConfirm] = useState(false);

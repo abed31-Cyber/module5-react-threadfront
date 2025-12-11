@@ -1,7 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import logout from "../../utils/logout";
 import './Profile.css';
+
 
 export default function Profile() {
   const { user } = useContext(AuthContext);
@@ -179,7 +181,7 @@ export default function Profile() {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="bottom-navigation">
+      <div className="bottom-nav">
         <button 
           className="nav-button create-button" 
           onClick={() => navigate('/createpost')}
@@ -190,6 +192,13 @@ export default function Profile() {
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
         </button>
+
+        <div  className="deco-button">
+          <button onClick={logout} aria-label="Déconnexion">
+  <img src="/src/assets/icons/logout.svg" alt="Déconnexion" width="24" height="24" />
+</button>
+        </div>
+
         <button 
           className="nav-button feed-button" 
           onClick={() => navigate('/feed')}

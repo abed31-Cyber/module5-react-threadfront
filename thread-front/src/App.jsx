@@ -1,13 +1,13 @@
 import './App.css'
 import { AuthProvider } from '../context/AuthContext.jsx'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link} from 'react-router-dom'
 import Profile from './components/profile/Profile.jsx'
-import Commentary from './components/comment/comment.jsx'
 import Register from './components/Register.jsx'
-import logout from './utils/logout.jsx'
 import Login from './components/Login.jsx'
 import Feed from './components/Feed/feed.jsx'
 import CreatePost from './components/Post/CreatePost.jsx'
+import PostDetail from './components/Post/PostDetail.jsx'
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
 
@@ -21,13 +21,12 @@ function App() {
       </nav> */}
         <Routes>
           <Route path="/" element={<Feed />} />
-          <Route path="/profile" element={<><Profile /><button onClick={logout} aria-label="Déconnexion">
-  <img src="/src/assets/icons/logout.svg" alt="Déconnexion" width="24" height="24" />
-</button></>} />
-          <Route path="/Login" element={<Login/>}/>
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/createpost" element={<CreatePost />} />
+          <Route path="/createpost" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
            <Route path="/feed" element={<Feed />} />
+           <Route path='/posts/:postId' element={<PrivateRoute><PostDetail /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
@@ -35,3 +34,4 @@ function App() {
 }
 
 export default App
+

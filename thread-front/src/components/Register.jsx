@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function MessageError({ message }) {
     return <p style={{ color: 'red' }}>{message}</p>;
@@ -11,6 +12,7 @@ export default function Register() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
     // je gère la soumission du formulaire pour eviter le rechargement de la page
     const handlesubmit = async (e) => {
         e.preventDefault();
@@ -43,6 +45,7 @@ export default function Register() {
                 setEmail("");
                 setPassword("");
                 setConfirmPassword("");
+                navigate('/Login');
             } else {
                 setError(data.message || "Erreur lors de la création du compte");
             }
@@ -64,6 +67,7 @@ export default function Register() {
                 <input type="password" placeholder="mot de passe encore" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
                 <button type="submit">Créer un compte</button>
             </form>
+              <Link to="/login">Déjà un compte ? Connectez-vous</Link>
         </div>
     );
 }
