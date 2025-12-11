@@ -1,0 +1,26 @@
+.create-comment{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+textarea {
+    background: linear-gradient(142deg,rgba(0, 0, 0, 1) 0%, rgba(29, 29, 38, 1) 63%, rgba(105, 99, 99, 1) 100%);    color: white;
+    border-radius: 2rem;
+    font-weight: bold;
+    padding-top: 1.5rem;
+    resize: none;
+}
+.title.comment {
+    color: white;
+    font-weight: bold;
+}
+.Hours-comment {
+    color: white;
+    font-size: 1rem;
+    margin-top: 1rem;
+    align-self: flex-start;
+}
+.commentaire-bouton {
+    padding: 1rem 2.7rem;
+    align-self: flex-start;
+}
