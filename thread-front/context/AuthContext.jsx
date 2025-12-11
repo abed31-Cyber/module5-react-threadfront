@@ -7,20 +7,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
-  // Au chargement, vérifier si un utilisateur est déjà stocké dans le localStorage
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
-    } catch (e) {
-      console.error("Erreur de parsing du JSON depuis localStorage", e);
-      // Gérer l'erreur, par exemple en vidant le localStorage corrompu
-      localStorage.removeItem('user');
-    }
-  }, []); // Le tableau vide signifie que cet effet ne s'exécute qu'une fois au montage
-
 // la fonction de connexion pour authentifier l'utilisateur dans toute l'application 
   const login = async ({ email, password }) => {
     try {
@@ -36,20 +22,17 @@ export function AuthProvider({ children }) {
       }
       // Récupération des données utilisateur après une connexion réussie
       const userData = await res.json();
-      localStorage.setItem('user', JSON.stringify(userData)); // Sauvegarder dans localStorage
       setUser(userData);
       setError(null);
       return true;
     } catch (err) {
       setError(err.message);
       setUser(null);
-      localStorage.removeItem('user'); // S'assurer que tout est nettoyé en cas d'erreur
       return false;
     }
   };
 // la fonction de déconnexion pour gérer la déconnexion de l'utilisateur dans toute l'application
   const logout = () => {
-    localStorage.removeItem('user'); // Supprimer de localStorage
     setUser(null);
     setError(null);
   };
