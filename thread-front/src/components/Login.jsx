@@ -4,17 +4,17 @@ import AuthContext from "../../context/AuthContext";
 import "./Login.css";
 
 export default function Login() {
-    const { login } = useContext(AuthContext);
+    const { login, error } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassWord] = useState("");
-    const [error, setError] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
     const [success, setSuccess] = useState("");
     const navigate = useNavigate();
     
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError("");
+        setErrorMsg("");
         setSuccess("");
         try {
             const success = await login({ email, password });
@@ -24,11 +24,11 @@ export default function Login() {
                     navigate("/feed");
                 }, 1000);
             } else {
-                setError("Erreur lors de la connexion");
+                setErrorMsg(error);
             }
         } catch (error) {
-            console.error("Erreur lors de la connexion :", error);
-            setError("Erreur serveur");
+            console.error("Erreur lors de la connexion 2 :", errorMsg);
+            setErrorMsg("Erreur serveur");
         }
     };
 
@@ -36,7 +36,7 @@ export default function Login() {
             <div className="connecter">
                 <form onSubmit={handleSubmit}>
                     <h2>|Connexion</h2>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
                     {success && <p style={{ color: "green" }}>{success}</p>}
                     <input
                         type="email"

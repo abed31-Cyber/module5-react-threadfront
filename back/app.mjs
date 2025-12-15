@@ -91,10 +91,10 @@ async function main() {
                 const email = req.body.email;
                 // on cherche l'utilisateur dans la bdd
                 const user = await User.findOne({ where: { email } });
-                if (!user) return res.status(400).json({ message: "Email incorrect" });
+                if (!user) return res.status(400).json({ error: "Email incorrect" });
                 // on compare le password avec le hash en bdd
                 const valid = await bcrypt.compare(password, user.password);
-                if (!valid) return res.status(400).json({ message: "Mot de passe incorrect" });
+                if (!valid) return res.status(400).json({ error: "Mot de passe incorrect" });
                 // si tout est ok, on génère un token JWT avec les infos utilisateur
                 const token = jwt.sign(
                     { id: user.id, username: user.username, role: user.role },
