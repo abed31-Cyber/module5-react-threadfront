@@ -1,12 +1,10 @@
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import logout from "../../utils/logout";
 import './Profile.css';
 
 
-export default function Profile() {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -195,8 +193,8 @@ export default function Profile() {
 
         <div  className="deco-button">
           <button onClick={logout} aria-label="Déconnexion">
-  <img src="/src/assets/icons/logout.svg" alt="Déconnexion" width="24" height="24" />
-</button>
+            <img src="/src/assets/icons/logout.svg" alt="Déconnexion" width="24" height="24" />
+          </button>
         </div>
 
         <button 

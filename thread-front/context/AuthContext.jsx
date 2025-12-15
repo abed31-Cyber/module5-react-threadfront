@@ -54,8 +54,9 @@ export function AuthProvider({ children }) {
     setError(null);
   };
 // Fournir le contexte d'authentification aux composants enfants
+  const isAuthenticated = !!user;
   return (
-    <AuthContext.Provider value={{ user, error, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, error, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
