@@ -1,9 +1,7 @@
-import { useState, useEffect, useContext } from "react";
-import AuthContext from "../../../context/AuthContext";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './Profile.css';
-
-
+import AuthContext from "../../../context/AuthContext";
+export default function Profile() {
   const { user, logout } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -209,4 +207,4 @@ import './Profile.css';
       </div>
     </div>
   );
-};
+}

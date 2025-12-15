@@ -26,7 +26,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/createpost" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
            <Route path="/feed" element={<Feed />} />
-           <Route path='/posts/:postId' element={<PrivateRoute><PostDetail /></PrivateRoute>} />
+          <Route path='/posts/:postId' element={<PostDetail />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
