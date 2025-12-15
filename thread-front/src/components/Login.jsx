@@ -36,10 +36,6 @@ export default function Login() {
             console.error("Erreur lors de la connexion :", error);
             toast.error("😿 Erreur serveur lors de la connexion");
             triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
-                setErrorMsg(error);
-            }
-        } catch (error) {
-            console.error("Erreur lors de la connexion 2 :", errorMsg);
             setErrorMsg("Erreur serveur");
         }
     };

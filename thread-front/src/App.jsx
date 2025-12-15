@@ -4,13 +4,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from '../context/AuthContext.jsx'
 import CatClawEffectProvider from './CatClawEffectProvider';
 import { BrowserRouter, Routes, Route, Link} from 'react-router-dom'
-import Profile from './components/profile/Profile.jsx'
-import Register from './components/Register.jsx'
-import Login from './components/Login.jsx'
-import Feed from './components/Feed/feed.jsx'
-import CreatePost from './components/Post/CreatePost.jsx'
-import PostDetail from './components/Post/PostDetail.jsx'
-import PrivateRoute from './components/PrivateRoute';
+import Profile from './components/profile/Profile.jsx';
+import Register from './components/Register.jsx';
+import Login from './components/Login.jsx';
+import Feed from './components/Feed/feed.jsx';
+import CreatePost from './components/Post/CreatePost.jsx';
+import PostDetail from './components/Post/PostDetail.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
 
 function App() {
 
