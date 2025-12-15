@@ -200,6 +200,7 @@ async function main() {
         });
 
         //----Création d'un commentaire pour un post
+        //ajout de l'authenticate
         app.post("/posts/:postId/comments", authenticate, async (req, res) => {
             const { postId } = req.params;
             const { content } = req.body;
