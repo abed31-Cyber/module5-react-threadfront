@@ -1,4 +1,5 @@
-import { toast } from 'react-toastify';
+import React, { createContext, useState, useEffect } from 'react';
+// import { toast } from 'react-toastify';
 
 // Create AuthContext 
 const AuthContext = createContext();
@@ -31,15 +32,6 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ email, password }),
       });
       if (!res.ok) {
-        if (res.status === 401) {
-          toast.error('Erreur 401 : Identifiants invalides');
-        } else if (res.status === 403) {
-          toast.error('Erreur 403 : Accès refusé');
-        } else if (res.status === 404) {
-          toast.error('Erreur 404 : Ressource non trouvée');
-        } else {
-          toast.error('Erreur lors de la connexion');
-        }
         throw new Error('Erreur lors de la connexion');
       }
       const userData = await res.json();

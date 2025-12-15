@@ -1,0 +1,39 @@
+.cat-claw-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.cat-claw {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%) scale(0.7);
+  background: url('/cat-claw.svg') no-repeat center/contain;
+  animation: claw-scratch 0.7s cubic-bezier(.68,-0.55,.27,1.55) 1;
+}
+
+@keyframes claw-scratch {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(-20deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1) rotate(5deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(-5deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7) rotate(0deg);
+  }
+}

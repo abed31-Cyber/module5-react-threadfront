@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { triggerCatErrorEffect } from '../../utils/catEffect';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -25,10 +26,10 @@ const PostDetail = () => {
           credentials: 'include',
         });
         if (!response.ok) {
-          if (response.status === 401) toast.error('😾 Mrrrow ! Tu n’es pas autorisé à voir ce post.');
-          else if (response.status === 403) toast.error('😼 Grrr ! Ce post est protégé, pas touche !');
-          else if (response.status === 404) toast.error('🐾 Miaou ? Ce post est introuvable, cherche ailleurs !');
-          else toast.error('😿 Impossible de récupérer ce post.');
+          if (response.status === 401) { toast.error('😾 Mrrrow ! Tu n’est pas autorisé à voir ce post.'); triggerCatErrorEffect("ANMLCat_Chat qui rale (ID 0658)_LS.mp3"); }
+          else if (response.status === 403) { toast.error('😼 Grrr ! Ce post est protégé, pas touche !'); triggerCatErrorEffect("ANMLCat_Grognement chat 3 (ID 1887)_LS.mp3"); }
+          else if (response.status === 404) { toast.error('🐾 Miaou ? Ce post est introuvable, cherche ailleurs !'); triggerCatErrorEffect("ANMLCat_Deux chats qui se battent (ID 0817)_LS.mp3"); }
+          else { toast.error('😿 Impossible de récupérer ce post.'); triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3"); }
           throw new Error('Erreur lors de la récupération du post');
         }
         const data = await response.json();
@@ -75,10 +76,10 @@ const PostDetail = () => {
         body: JSON.stringify({ content: commentContent })
       });
       if (!res.ok) {
-        if (res.status === 401) toast.error('😾 Mrrrow ! Tu n’es pas autorisé à miauler ici.');
-        else if (res.status === 403) toast.error('😼 Grrr ! Tu n’as pas le droit de commenter ce post.');
-        else if (res.status === 404) toast.error('🐾 Miaou ? Ce post n’existe plus, va voir ailleurs !');
-        else toast.error("😿 Impossible d’ajouter ton commentaire.");
+        if (res.status === 401) { toast.error('😾 Mrrrow ! Tu n’est pas autorisé à miauler ici.'); triggerCatErrorEffect("ANMLCat_Chat qui rale (ID 0658)_LS.mp3"); }
+        else if (res.status === 403) { toast.error('😼 Grrr ! Tu n’as pas le droit de commenter ce post.'); triggerCatErrorEffect("ANMLCat_Grognement chat 3 (ID 1887)_LS.mp3"); }
+        else if (res.status === 404) { toast.error('🐾 Miaou ? Ce post n’existe plus, va voir ailleurs !'); triggerCatErrorEffect("ANMLCat_Deux chats qui se battent (ID 0817)_LS.mp3"); }
+        else { toast.error("😿 Impossible d’ajouter ton commentaire."); triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3"); }
         throw new Error("Erreur lors de l'ajout du commentaire");
       }
       setCommentSuccess("Commentaire ajouté !");
@@ -104,10 +105,10 @@ const PostDetail = () => {
         credentials: 'include',
       });
       if (!res.ok) {
-        if (res.status === 401) toast.error('😾 Mrrrow ! Tu n’as pas le droit de supprimer ce post.');
-        else if (res.status === 403) toast.error('😼 Grrr ! Ce post est protégé, pas touche !');
-        else if (res.status === 404) toast.error('🐾 Miaou ? Ce post a disparu, introuvable !');
-        else toast.error("😿 Impossible de supprimer ce post.");
+        if (res.status === 401) { toast.error('😾 Mrrrow ! Tu n’as pas le droit de supprimer ce post.'); triggerCatErrorEffect("ANMLCat_Chat qui rale (ID 0658)_LS.mp3"); }
+        else if (res.status === 403) { toast.error('😼 Grrr ! Ce post est protégé, pas touche !'); triggerCatErrorEffect("ANMLCat_Grognement chat 3 (ID 1887)_LS.mp3"); }
+        else if (res.status === 404) { toast.error('🐾 Miaou ? Ce post a disparu, introuvable !'); triggerCatErrorEffect("ANMLCat_Deux chats qui se battent (ID 0817)_LS.mp3"); }
+        else { toast.error("😿 Impossible de supprimer ce post."); triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3"); }
         throw new Error("Erreur lors de la suppression du post");
       }
       navigate('/');
@@ -118,21 +119,26 @@ const PostDetail = () => {
 
   return (
     <div className="post-detail">
-      <h1 className="post-title">Détail du Post</h1>
+      <h1>Post</h1>
       <div className="post-meta">
-        <p className="post-author">Auteur : {post.User?.username || 'Anonyme'}</p>
-        <p className="post-date">Créé le : {new Date(post.createdAt).toLocaleDateString('fr-FR')}</p>
+        <span className="post-author">@{post.User?.username || 'Anonyme'}</span>
+        <span className="post-date">{new Date(post.createdAt).toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' })} - {new Date(post.createdAt).toLocaleDateString('fr-FR')}</span>
       </div>
       <div className="post-content">
         <p>{post.content}</p>
         {canDeletePost && (
-          <button onClick={handleDeletePost} className="delete-btn" style={{marginLeft:8}}>
+          <button onClick={handleDeletePost} className="delete-btn">
             Supprimer le post
           </button>
         )}
       </div>
-      <div className="post-comments">
-        <h2>Commentaires</h2>
+      <section className="post-comments">
+        <div className="comments-header" style={{display:'flex',alignItems:'center',gap:8,margin:'24px 0 16px 0'}}>
+          <span style={{fontSize:'1.2rem',fontWeight:600}}>{post.Comments ? post.Comments.length : 0}</span>
+          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" style={{verticalAlign:'middle'}}>
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" strokeLinejoin="round" strokeLinecap="round"/>
+          </svg>
+        </div>
         {post.Comments && post.Comments.length > 0 ? (
           <ul>
             {post.Comments.map((comment) => {
@@ -147,13 +153,12 @@ const PostDetail = () => {
                     credentials: 'include',
                   });
                   if (!res.ok) {
-                    if (res.status === 401) toast.error('😾 Mrrrow ! Tu n’as pas le droit de supprimer ce commentaire.');
-                    else if (res.status === 403) toast.error('😼 Grrr ! Ce commentaire est protégé, pas touche !');
-                    else if (res.status === 404) toast.error('🐾 Miaou ? Ce commentaire a disparu, introuvable !');
-                    else toast.error("😿 Impossible de supprimer ce commentaire.");
+                    if (res.status === 401) { toast.error('😾 Mrrrow ! Tu n’as pas le droit de supprimer ce commentaire.'); triggerCatErrorEffect("ANMLCat_Chat qui rale (ID 0658)_LS.mp3"); }
+                    else if (res.status === 403) { toast.error('😼 Grrr ! Ce commentaire est protégé, pas touche !'); triggerCatErrorEffect("ANMLCat_Grognement chat 3 (ID 1887)_LS.mp3"); }
+                    else if (res.status === 404) { toast.error('🐾 Miaou ? Ce commentaire a disparu, introuvable !'); triggerCatErrorEffect("ANMLCat_Deux chats qui se battent (ID 0817)_LS.mp3"); }
+                    else { toast.error("😿 Impossible de supprimer ce commentaire."); triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3"); }
                     throw new Error("Erreur lors de la suppression du commentaire");
                   }
-                  // Retirer le commentaire du state
                   setPost((prev) => ({
                     ...prev,
                     Comments: prev.Comments.filter((c) => c.id !== comment.id)
@@ -164,9 +169,9 @@ const PostDetail = () => {
               };
               return (
                 <li key={comment.id} style={{display:'flex',alignItems:'center',gap:8}}>
-                  <p style={{margin:0}}><strong>{comment.User?.username || 'Anonyme'} :</strong> {comment.content}</p>
+                  <p><strong>@{comment.User?.username || 'Anonyme'}</strong> {comment.content}</p>
                   {canDeleteComment && (
-                    <button onClick={handleDeleteComment} className="delete-btn" style={{marginLeft:8}}>
+                    <button onClick={handleDeleteComment} className="delete-btn">
                       Supprimer
                     </button>
                   )}
@@ -178,26 +183,26 @@ const PostDetail = () => {
           <p>Aucun commentaire pour ce post.</p>
         )}
         {isAuthenticated && (
-          <form onSubmit={handleCommentSubmit} style={{marginTop:16}}>
+          <form onSubmit={handleCommentSubmit} className="comment-form-section">
             <textarea
               value={commentContent}
               onChange={e => setCommentContent(e.target.value)}
               placeholder="Votre commentaire..."
               rows={3}
-              style={{width:'100%',borderRadius:8,padding:8}}
+              className="comment-textarea"
               disabled={submitting}
             />
-            <button type="submit" disabled={submitting} style={{marginTop:8}}>
+            <button type="submit" disabled={submitting} className="comment-submit-btn">
               {submitting ? 'Envoi...' : 'Commenter'}
             </button>
-            {commentError && <div className="error-message">{commentError}</div>}
-            {commentSuccess && <div style={{color:'green'}}>{commentSuccess}</div>}
+            {commentError && <div className="error-message comment-error">{commentError}</div>}
+            {commentSuccess && <div className="comment-success">{commentSuccess}</div>}
           </form>
         )}
         {!isAuthenticated && (
-          <div style={{marginTop:16, color:'#888'}}>Connectez-vous pour commenter ce post.</div>
+          <div className="comment-login-info">Connectez-vous pour commenter ce post.</div>
         )}
-      </div>
+      </section>
       {/* Navigation Buttons */}
       <div className="bottom-navigation">
         <button 

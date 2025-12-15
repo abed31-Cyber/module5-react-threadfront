@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { toast } from 'react-toastify';
+import { triggerCatErrorEffect } from '../../utils/catEffect';
 import { useNavigate } from 'react-router-dom';
 import FeedCard from './PostCard.jsx';
 import './feed.css';
@@ -24,26 +26,43 @@ const Feed = () => {
     e.preventDefault();
     if (!newPostContent.trim()) return;
 
+    // Création d'un post optimiste
+    const tempId = `temp-${Date.now()}`;
+    const optimisticPost = {
+      id: tempId,
+      content: newPostContent,
+      createdAt: new Date().toISOString(),
+      User: user ? { username: user.user?.username || user.username } : { username: 'Moi' },
+      optimistic: true,
+    };
+    setPosts((prev) => [optimisticPost, ...prev]);
+    setNewPostContent('');
+
     try {
-        const response = await fetch(`${API_BASE_URL}/posts`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({ content: newPostContent }),
-        });
+      const response = await fetch(`${API_BASE_URL}/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ content: optimisticPost.content }),
+      });
 
-        if (!response.ok) {
-            throw new Error('Failed to create post');
-        }
+      if (!response.ok) {
+        // Suppression du post optimiste en cas d'échec
+        setPosts((prev) => prev.filter((p) => p.id !== tempId));
+        toast.error('😿 Impossible de créer le post.');
+        triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
+        throw new Error('Failed to create post');
+      }
 
-        setNewPostContent('');
-        setPosts([]);
-        setHasMore(true);
-        setPage(1);
+      const realPost = await response.json();
+      setPosts((prev) => [realPost, ...prev.filter((p) => p.id !== tempId)]);
     } catch (err) {
-        setError(err.message || 'Could not submit post.');
+      setPosts((prev) => prev.filter((p) => p.id !== tempId));
+      setError(err.message || 'Could not submit post.');
+      toast.error('😿 Impossible de créer le post.');
+      triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
     }
   };
 
@@ -58,6 +77,8 @@ const Feed = () => {
         );
 
         if (!response.ok) {
+          toast.error('😿 Impossible de charger les posts.');
+          triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
           throw new Error(`Erreur HTTP: ${response.status}`);
         }
 
@@ -77,6 +98,8 @@ const Feed = () => {
       } catch (err) {
           console.error(' Error:', err);
           setError(err.message || 'Une erreur est survenue.');
+          toast.error('😿 Impossible de charger les posts.');
+          triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
       } finally {
         setLoading(false);
       }
@@ -157,10 +180,13 @@ const Feed = () => {
         {posts.map((post) => (
           <div
             key={post.id}
-            onClick={() => navigate(`/posts/${post.id}`)}
-            style={{ cursor: 'pointer' }}
+            onClick={() => !post.optimistic && navigate(`/posts/${post.id}`)}
+            style={{ cursor: post.optimistic ? 'wait' : 'pointer', opacity: post.optimistic ? 0.6 : 1 }}
           >
             <FeedCard post={post} />
+            {post.optimistic && (
+              <div style={{ color: '#888', fontSize: 12, marginTop: 4 }}>Envoi...</div>
+            )}
           </div>
         ))}
       </div>
