@@ -206,8 +206,31 @@ async function main() {
             const { content } = req.body;
 
             try {
-                const comment = await Comment.create({ content, postId });
-                res.status(201).json(comment);
+                // On suppose que l'utilisateur est authentifié (cookie JWT)
+                let userId = null;
+                if (req.cookies && req.cookies.jwt) {
+                    try {
+                        const decoded = jwt.verify(req.cookies.jwt, secretKeyJWT);
+                        userId = decoded.id;
+                    } catch (e) {}
+                }
+                // Vérification que l'utilisateur existe bien
+                if (userId) {
+                    const user = await User.findByPk(userId);
+                    if (!user) {
+                        return res.status(401).json({ message: "Utilisateur non trouvé. Veuillez vous reconnecter." });
+                    }
+                }
+                // Si pas d'userId, on laisse Sequelize gérer (pour compatibilité)
+                const comment = await Comment.create(userId ? { content, postId, userId } : { content, postId });
+                // On recharge le commentaire avec l'utilisateur associé pour le front
+                const commentWithUser = await Comment.findByPk(comment.id, {
+                    include: [{
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }]
+                });
+                res.status(201).json(commentWithUser);
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ message: "Erreur serveur" });
@@ -264,7 +287,7 @@ async function main() {
 
                 //  on récupère le commentaire à supprimer 
 
-                const comment = await Comment.findByPk({ where: { id: req.params.commentId } });
+                const comment = await Comment.findByPk(req.params.commentId);
                 if (!comment) {
                     return res.status().json({ message: "Commentaire non trouvée " })
                 } else {

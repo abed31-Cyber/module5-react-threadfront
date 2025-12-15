@@ -1,4 +1,5 @@
-import { toast } from 'react-toastify';
+import React, { createContext, useState, useEffect } from 'react';
+// import { toast } from 'react-toastify';
 
 // Create AuthContext 
 const AuthContext = createContext();
@@ -21,6 +22,7 @@ export function AuthProvider({ children }) {
        const data = await res.json();
 
       if (!res.ok) {
+        throw new Error('Erreur lors de la connexion');
         if (res.status === 401) {
           toast.error('Erreur 401 : Identifiants invalides');
         } else if (res.status === 403) {
