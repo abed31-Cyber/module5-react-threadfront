@@ -1,4 +1,6 @@
 import './App.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from '../context/AuthContext.jsx'
 import { BrowserRouter, Routes, Route, Link} from 'react-router-dom'
 import Profile from './components/profile/Profile.jsx'
@@ -14,11 +16,11 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-      {/* <nav>
-       <Link to="/">Accueil</Link>
-       <Link to="/profile">profile</Link>
-       <Link to="/">feed</Link>
-      </nav> */}
+        {/* <nav>
+         <Link to="/">Accueil</Link>
+         <Link to="/profile">profile</Link>
+         <Link to="/">feed</Link>
+        </nav> */}
         <Routes>
           <Route path="/" element={<Feed />} />
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
@@ -28,6 +30,7 @@ function App() {
            <Route path="/feed" element={<Feed />} />
           <Route path='/posts/:postId' element={<PostDetail />} />
         </Routes>
+        <ToastContainer position="top-right" autoClose={4000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
       </BrowserRouter>
     </AuthProvider>
   )

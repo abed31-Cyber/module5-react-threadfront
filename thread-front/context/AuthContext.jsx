@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 // Create AuthContext 
 const AuthContext = createContext();
@@ -24,7 +24,6 @@ export function AuthProvider({ children }) {
 // la fonction de connexion pour authentifier l'utilisateur dans toute l'application 
   const login = async ({ email, password }) => {
     try {
-        // appel de l'API pour authentifier l'utilisateur dans la base de données et gérer la session
       const res = await fetch(`http://localhost:3000/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -32,18 +31,26 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ email, password }),
       });
       if (!res.ok) {
-        throw new Error('Identifiants invalides');
+        if (res.status === 401) {
+          toast.error('Erreur 401 : Identifiants invalides');
+        } else if (res.status === 403) {
+          toast.error('Erreur 403 : Accès refusé');
+        } else if (res.status === 404) {
+          toast.error('Erreur 404 : Ressource non trouvée');
+        } else {
+          toast.error('Erreur lors de la connexion');
+        }
+        throw new Error('Erreur lors de la connexion');
       }
-      // Récupération des données utilisateur après une connexion réussie
       const userData = await res.json();
-      localStorage.setItem('user', JSON.stringify(userData)); // Sauvegarder dans localStorage
+      localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
       setError(null);
       return true;
     } catch (err) {
       setError(err.message);
       setUser(null);
-      localStorage.removeItem('user'); // S'assurer que tout est nettoyé en cas d'erreur
+      localStorage.removeItem('user');
       return false;
     }
   };
