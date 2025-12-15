@@ -45,8 +45,12 @@ async function main() {
                 const { username, email, password, role } = req.body;
 
                 // Vérifie si l'utilisateur existe déjà
-                const existingUser = await User.findOne({ where: { email } });
+                const existingUser = await User.findOne({ where: { username: username}});
                 if (existingUser) {
+                    return res.status(409).json({ message: "Nom d'utilisateur déjà utilisé" });
+                }
+                const existingMail = await User.findOne({ where: { email: email} });
+                if (existingMail) {
                     return res.status(409).json({ message: "Email déjà utilisé" });
                 }
 
