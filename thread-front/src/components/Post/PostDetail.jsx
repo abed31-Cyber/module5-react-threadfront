@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { useParams, useNavigate } from 'react-router-dom';
 import './post.css';
@@ -23,6 +24,13 @@ const PostDetail = () => {
         const response = await fetch(`http://localhost:3000/posts/${postId}`, {
           credentials: 'include',
         });
+        if (!response.ok) {
+          if (response.status === 401) toast.error('😾 Mrrrow ! Tu n’es pas autorisé à voir ce post.');
+          else if (response.status === 403) toast.error('😼 Grrr ! Ce post est protégé, pas touche !');
+          else if (response.status === 404) toast.error('🐾 Miaou ? Ce post est introuvable, cherche ailleurs !');
+          else toast.error('😿 Impossible de récupérer ce post.');
+          throw new Error('Erreur lors de la récupération du post');
+        }
         const data = await response.json();
         console.log('API response:', data);
         setPost(data); // L'API renvoie directement l'objet post, pas data.post
@@ -66,7 +74,13 @@ const PostDetail = () => {
         credentials: 'include',
         body: JSON.stringify({ content: commentContent })
       });
-      if (!res.ok) throw new Error("Erreur lors de l'ajout du commentaire");
+      if (!res.ok) {
+        if (res.status === 401) toast.error('😾 Mrrrow ! Tu n’es pas autorisé à miauler ici.');
+        else if (res.status === 403) toast.error('😼 Grrr ! Tu n’as pas le droit de commenter ce post.');
+        else if (res.status === 404) toast.error('🐾 Miaou ? Ce post n’existe plus, va voir ailleurs !');
+        else toast.error("😿 Impossible d’ajouter ton commentaire.");
+        throw new Error("Erreur lors de l'ajout du commentaire");
+      }
       setCommentSuccess("Commentaire ajouté !");
       setCommentContent("");
       // Rafraîchir les commentaires
@@ -89,7 +103,13 @@ const PostDetail = () => {
         method: 'DELETE',
         credentials: 'include',
       });
-      if (!res.ok) throw new Error("Erreur lors de la suppression du post");
+      if (!res.ok) {
+        if (res.status === 401) toast.error('😾 Mrrrow ! Tu n’as pas le droit de supprimer ce post.');
+        else if (res.status === 403) toast.error('😼 Grrr ! Ce post est protégé, pas touche !');
+        else if (res.status === 404) toast.error('🐾 Miaou ? Ce post a disparu, introuvable !');
+        else toast.error("😿 Impossible de supprimer ce post.");
+        throw new Error("Erreur lors de la suppression du post");
+      }
       navigate('/');
     } catch (err) {
       alert(err.message);
@@ -126,7 +146,13 @@ const PostDetail = () => {
                     method: 'DELETE',
                     credentials: 'include',
                   });
-                  if (!res.ok) throw new Error("Erreur lors de la suppression du commentaire");
+                  if (!res.ok) {
+                    if (res.status === 401) toast.error('😾 Mrrrow ! Tu n’as pas le droit de supprimer ce commentaire.');
+                    else if (res.status === 403) toast.error('😼 Grrr ! Ce commentaire est protégé, pas touche !');
+                    else if (res.status === 404) toast.error('🐾 Miaou ? Ce commentaire a disparu, introuvable !');
+                    else toast.error("😿 Impossible de supprimer ce commentaire.");
+                    throw new Error("Erreur lors de la suppression du commentaire");
+                  }
                   // Retirer le commentaire du state
                   setPost((prev) => ({
                     ...prev,
