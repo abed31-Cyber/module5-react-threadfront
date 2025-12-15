@@ -48,7 +48,16 @@ export function AuthProvider({ children }) {
     }
   };
 // la fonction de déconnexion pour gérer la déconnexion de l'utilisateur dans toute l'application
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch('http://localhost:3000/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (e) {
+      // Optionnel : log l'erreur mais on continue le reset local
+      console.error('Erreur lors du logout serveur', e);
+    }
     localStorage.removeItem('user'); // Supprimer de localStorage
     setUser(null);
     setError(null);
