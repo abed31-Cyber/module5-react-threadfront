@@ -9,6 +9,7 @@ import HomePage from './components/HomePage.jsx'
 import Login from './components/Login.jsx'
 import Feed from './components/Feed/feed.jsx'
 import CreatePost from './components/Post/CreatePost.jsx'
+import CreateComment from "./components/comment/CreateComment";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/createpost" element={<CreatePost />} />
+          <Route path="/CreateComment" element={<CreateComment />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
