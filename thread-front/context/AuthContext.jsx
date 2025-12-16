@@ -8,6 +8,19 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
+  // Au chargement, vérifier si un utilisateur est déjà stocké dans le localStorage
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (e) {
+      console.error("Erreur de parsing du JSON depuis localStorage", e);
+      // Gérer l'erreur, par exemple en vidant le localStorage corrompu
+      localStorage.removeItem('user');
+    }
+  }, []); // Le tableau vide signifie que cet effet ne s'exécute qu'une fois au montage
 
 // la fonction de connexion pour authentifier l'utilisateur dans toute l'application 
   const login = async ({ email, password }) => {
@@ -18,30 +31,18 @@ export function AuthProvider({ children }) {
         credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
-
-       const data = await res.json();
-
       if (!res.ok) {
         throw new Error('Erreur lors de la connexion');
-        if (res.status === 401) {
-          toast.error('Erreur 401 : Identifiants invalides');
-        } else if (res.status === 403) {
-          toast.error('Erreur 403 : Accès refusé');
-        } else if (res.status === 404) {
-          toast.error('Erreur 404 : Ressource non trouvée');
-        } else {
-          toast.error('Erreur lors de la connexion');
-        }
-        throw new Error('Erreur lors de la connexion:'+data.error || data.message || "Erreur de connexion");
       }
-      // Récupération des données utilisateur après une connexion réussie
-    
-      setUser(data.user);
+      const userData = await res.json();
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
       setError(null);
       return true;
     } catch (err) {
       setError(err.message);
       setUser(null);
+      localStorage.removeItem('user');
       return false;
     }
   };
@@ -56,6 +57,7 @@ export function AuthProvider({ children }) {
       // Optionnel : log l'erreur mais on continue le reset local
       console.error('Erreur lors du logout serveur', e);
     }
+    localStorage.removeItem('user'); // Supprimer de localStorage
     setUser(null);
     setError(null);
   };

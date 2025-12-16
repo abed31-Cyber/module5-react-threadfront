@@ -1,61 +1,43 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import { SocketProvider } from './contexts/SocketContext';
-import { ChallengeProvider } from './contexts/ChallengeContext';
-import { AdminProvider } from './contexts/AdminContext';
-import { useAuth } from './contexts/AuthContext';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
-import Header from './components/header';
-import Profile from './pages/Profile';
-import Challenges from './pages/Challenges';
-import ChallengeDetail from './pages/ChallengeDetail';
-import CreateChallenge from './pages/CreateChallenge';
-import Admin from './pages/Admin';
-import ChatWidget from './components/ChatWidget';
+import './App.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from '../context/AuthContext.jsx'
+import CatClawEffectProvider from './CatClawEffectProvider';
+import { BrowserRouter, Routes, Route, Link} from 'react-router-dom'
+import Profile from './components/profile/Profile.jsx'
+import Register from './components/Register.jsx'
+import Login from './components/Login.jsx'
+import Feed from './components/Feed/feed.jsx'
+import CreatePost from './components/Post/CreatePost.jsx'
+import PostDetail from './components/Post/PostDetail.jsx'
+import PrivateRoute from './components/PrivateRoute';
 
-const ProtectedAdminRoute = ({ children }) => {
-  const { user } = useAuth();
-  if (!user || user.role !== 'admin') {
-    return <Navigate to="/" replace />;
-  }
-  return children;
-};
+function App() {
 
-export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <SocketProvider>
-        <ChallengeProvider>
-          <AdminProvider>
-            <Header />
-            <main className="main">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/Challenges" element={<Challenges />} />
-                <Route path="/Challenge/:id" element={<ChallengeDetail />} />
-                <Route path="/create" element={<CreateChallenge />} />
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedAdminRoute>
-                      <Admin />
-                    </ProtectedAdminRoute>
-                  }
-                />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/profile" element={<Profile />} />
-              </Routes>
-            </main>
-              <ChatWidget />
-          </AdminProvider>
-        </ChallengeProvider>
-        </SocketProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  );
+    <AuthProvider>
+      <CatClawEffectProvider>
+        <BrowserRouter>
+          {/* <nav>
+           <Link to="/">Accueil</Link>
+           <Link to="/profile">profile</Link>
+           <Link to="/">feed</Link>
+          </nav> */}
+          <Routes>
+            <Route path="/" element={<Feed />} />
+            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/createpost" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
+             <Route path="/feed" element={<Feed />} />
+            <Route path='/posts/:postId' element={<PostDetail />} />
+          </Routes>
+          <ToastContainer position="top-right" autoClose={4000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
+        </BrowserRouter>
+      </CatClawEffectProvider>
+    </AuthProvider>
+  )
 }
+
+export default App
+
