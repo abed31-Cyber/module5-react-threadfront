@@ -1,11 +1,8 @@
 /* Feed Container */
 .feed-container {
-  background-color: #1a1a1a;
-  min-height: 100vh;
-  color: #ffffff;
-  padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  overflow: hidden; /* Suppression du scroll */
+  width: 100%;
+  padding: 16px;
+  padding-bottom: 120px; /* place pour la nav */
 }
 
 /* Feed Header */
@@ -14,36 +11,26 @@
 }
 
 .feed-header h1 {
-  font-size: 48px;
+  font-size: 32px;
   font-weight: 700;
-  margin: 0 0 20px 0;
-  padding-left: 20px;
-  border-left: 6px solid #ffffff;
-  line-height: 1.2;
+  margin-bottom: 24px;
+  padding-left: 16px;
+  border-left: 4px solid #ffffff;
 }
-
 /* Post Form */
 .post-form {
   display: none; /* Masqué car pas visible sur la capture */
 }
 
-/* Posts List */
-.posts-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0; /* Pas d'espace entre les cards */
-  margin-bottom: 100px;
-}
-
 /* Post Card */
 .post-card {
-  background-color: #2a2a2a;
+  /* max-height: 100px; */
+  background: linear-gradient(142deg,rgba(0, 0, 0, 1) 49%, rgba(162, 162, 168, 1) 100%);
   border-radius: 20px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   margin-bottom: 16px; /* Espacement entre les cards */
 }
-
 .post-header {
   display: flex;
   align-items: center;
@@ -98,7 +85,6 @@
 
 /* Error States */
 .error-container {
-  background-color: #3a1a1a;
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
@@ -169,13 +155,6 @@
   padding: 20px;
   color: #666666;
   font-size: 14px;
-}
-
-/* Bottom Navigation (visible dans l'image) */
-.feed-container::after {
-  content: '';
-  display: block;
-  height: 80px;
 }
 
 .bottom-navigation {
