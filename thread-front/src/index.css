@@ -2,3 +2,16 @@ body {
     background-color: #333333;
     font-family: 'Josefin Sans', sans-serif;
 }
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-top: 1px solid #333;
+  z-index: 1000;
+}

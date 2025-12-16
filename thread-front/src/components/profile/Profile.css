@@ -1,21 +1,15 @@
 /* Styles basiques pour la page Profile */
-body{
-  background-color: #302d2d;
-}
 .profile-container {
   color: #fff;
   min-height: 100vh;
   padding: 24px;
-  font-family: 'Josefin Sans', sans-serif;
 }
 
 .post-item {
-
   background: linear-gradient(135deg, #0a0a0a 0%, #464242 100%);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;
- 
 }
 
 .post-header {
@@ -50,12 +44,4 @@ body{
 .feed-button{
   display: flex;
   align-items: center;
-  
-}
-
-.bottom-nav{
-  display: flex;
-  justify-content: space-between;
-
- 
 }
