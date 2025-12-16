@@ -1,62 +1,113 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import PostCard from './PostCard.jsx';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { toast } from 'react-toastify';
+import { triggerCatErrorEffect } from '../../utils/catEffect';
+import { useNavigate } from 'react-router-dom';
+import FeedCard from './PostCard.jsx';
 import './feed.css';
+import AuthContext from '../../../context/AuthContext.jsx';
+
 
 const Feed = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState(null);
+  const [newPostContent, setNewPostContent] = useState('');
   const observerRef = useRef(null);  
   const loadMoreRef = useRef(null);
 
   const POSTS_PER_PAGE = 10;
-  const API_BASE_URL = 'http://localhost:3000';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
-  // Fetch posts from API
-  const fetchPosts = useCallback(async (pageNum) => {
-    if (loading) return;
-    
-    setLoading(true);
-    setError(null);
+  const handlePostSubmit = async (e) => {
+    e.preventDefault();
+    if (!newPostContent.trim()) return;
+
+    // Création d'un post optimiste
+    const tempId = `temp-${Date.now()}`;
+    const optimisticPost = {
+      id: tempId,
+      content: newPostContent,
+      createdAt: new Date().toISOString(),
+      User: user ? { username: user.user?.username || user.username } : { username: 'Moi' },
+      optimistic: true,
+    };
+    setPosts((prev) => [optimisticPost, ...prev]);
+    setNewPostContent('');
 
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/posts?page=${pageNum}&limit=${POSTS_PER_PAGE}`
-      );
+      const response = await fetch(`${API_BASE_URL}/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ content: optimisticPost.content }),
+      });
 
       if (!response.ok) {
-        throw new Error(`Erreur HTTP: ${response.status}`);
+        // Suppression du post optimiste en cas d'échec
+        setPosts((prev) => prev.filter((p) => p.id !== tempId));
+        toast.error('😿 Impossible de créer le post.');
+        triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
+        throw new Error('Failed to create post');
       }
 
-      const data = await response.json();
-      
-      if (data.length === 0 || data.length < POSTS_PER_PAGE) {
-        setHasMore(false);
-      }
-
-      setPosts((prevPosts) => {
-        // Avoid duplicates
-        const newPosts = data.filter(
-          (newPost) => !prevPosts.some((post) => post.id === newPost.id)
-        );
-        return [...prevPosts, ...newPosts];
-      });
+      const realPost = await response.json();
+      setPosts((prev) => [realPost, ...prev.filter((p) => p.id !== tempId)]);
     } catch (err) {
-      setError(err.message || 'Une erreur est survenue, Mimine est passée par là ! Fuyez');
-      console.error('Erreur lors du fetch, Mimine n\'est pas loin:', err);
-    } finally {
-      setLoading(false);
+      setPosts((prev) => prev.filter((p) => p.id !== tempId));
+      setError(err.message || 'Could not submit post.');
+      toast.error('😿 Impossible de créer le post.');
+      triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
     }
-  }, [loading]);
+  };
 
-  // Initial load
   useEffect(() => {
-    fetchPosts(1);
-  }, []);
+    const loadPosts = async () => {
+      setLoading(true);
+      setError(null);
 
-  // Infinite scroll observer
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/posts?page=${page}&limit=${POSTS_PER_PAGE}`
+        );
+
+        if (!response.ok) {
+          toast.error('😿 Impossible de charger les posts.');
+          triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
+          throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.length === 0 || data.length < POSTS_PER_PAGE) {
+          setHasMore(false);
+        }
+
+        setPosts((prevPosts) => {
+          const newPosts = data.filter(
+            (newPost) => !prevPosts.some((post) => post.id === newPost.id)
+          );
+          const result = page === 1 ? newPosts : [...prevPosts, ...newPosts];
+          return result;
+        });
+      } catch (err) {
+          console.error(' Error:', err);
+          setError(err.message || 'Une erreur est survenue.');
+          toast.error('😿 Impossible de charger les posts.');
+          triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPosts();
+  }, [page, API_BASE_URL, POSTS_PER_PAGE]);
+
   useEffect(() => {
     if (!hasMore || loading) return;
 
@@ -68,11 +119,7 @@ const Feed = () => {
     observerRef.current = new IntersectionObserver((entries) => {
       const firstEntry = entries[0];
       if (firstEntry.isIntersecting && hasMore && !loading) {
-        setPage((prevPage) => {
-          const nextPage = prevPage + 1;
-          fetchPosts(nextPage);
-          return nextPage;
-        });
+        setPage((prevPage) => prevPage + 1);
       }
     }, options);
 
@@ -86,21 +133,29 @@ const Feed = () => {
         observerRef.current.unobserve(currentLoadMoreRef);
       }
     };
-  }, [hasMore, loading, fetchPosts]);
+  }, [hasMore, loading]);
 
-  // Retry on error
   const handleRetry = () => {
     setPosts([]);
-    setPage(1);
     setHasMore(true);
     setError(null);
-    fetchPosts(1);
+    setPage(1);
   };
 
   return (
     <div className="feed-container">
       <div className="feed-header">
         <h1> Feed</h1>
+        {user && (
+          <form onSubmit={handlePostSubmit} className="post-form">
+            <textarea 
+              placeholder="What's on your mind?"
+              value={newPostContent}
+              onChange={(e) => setNewPostContent(e.target.value)}
+            ></textarea>
+            <button type="submit">Post</button>
+          </form>
+        )}
       </div>
 
       {error && (
@@ -109,7 +164,7 @@ const Feed = () => {
              {error}
           </div>
           <button onClick={handleRetry} className="retry-button">
-            Réessayer, Mimine y croit !
+            Réessayer
           </button>
         </div>
       )}
@@ -123,7 +178,16 @@ const Feed = () => {
 
       <div className="posts-list">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <div
+            key={post.id}
+            onClick={() => !post.optimistic && navigate(`/posts/${post.id}`)}
+            style={{ cursor: post.optimistic ? 'wait' : 'pointer', opacity: post.optimistic ? 0.6 : 1 }}
+          >
+            <FeedCard post={post} />
+            {post.optimistic && (
+              <div style={{ color: '#888', fontSize: 12, marginTop: 4 }}>Envoi...</div>
+            )}
+          </div>
         ))}
       </div>
 
@@ -142,9 +206,33 @@ const Feed = () => {
 
       {!hasMore && posts.length > 0 && (
         <div className="no-more-posts">
-           Vous avez vu tous les posts que Mimine a
+           Vous avez vu tous les posts.
         </div>
       )}
+
+      {/* Navigation Buttons */}
+      <div className="bottom-navigation">
+        <button 
+          className="nav-button create-button" 
+          onClick={() => navigate('/createpost')}
+          aria-label="Créer un post"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+        <button 
+          className="nav-button profile-button" 
+          onClick={() => navigate('/profile')}
+          aria-label="Profil"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </button>
+      </div>
     </div>
   );
 };

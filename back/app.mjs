@@ -91,10 +91,10 @@ async function main() {
                 const email = req.body.email;
                 // on cherche l'utilisateur dans la bdd
                 const user = await User.findOne({ where: { email } });
-                if (!user) return res.status(400).json({ message: "Email incorrect" });
+                if (!user) return res.status(400).json({ error: "Email incorrect" });
                 // on compare le password avec le hash en bdd
                 const valid = await bcrypt.compare(password, user.password);
-                if (!valid) return res.status(400).json({ message: "Mot de passe incorrect" });
+                if (!valid) return res.status(400).json({ error: "Mot de passe incorrect" });
                 // si tout est ok, on génère un token JWT avec les infos utilisateur
                 const token = jwt.sign(
                     { id: user.id, username: user.username, role: user.role },
@@ -126,17 +126,17 @@ async function main() {
 
         app.post("/posts", authenticate, async (req, res) => {
             try {
-                if (!req.body || !req.body.title || !req.body.content) {
-                    res.status(404).json({ message: "Pour créer un post, un titre et un contenu est requis" });
+                if (!req.body || !req.body.content) {
+                    return res.status(400).json({ message: "Pour créer un post, un contenu est requis" });
                 }
-                await Post.create({
-                    "title": req.body.title,
+                const post = await Post.create({
                     "content": req.body.content,
                     "userId" : req.user.id
                 });
-                res.status(201).json({ message: "Post crée avec succées" })
+                return res.status(201).json({ message: "Post créé avec succès", post });
             } catch (error) {
-                res.status(500).json({ message: "Erreur serveur" });
+                console.error(error);
+                return res.status(500).json({ message: "Erreur serveur" });
             }
         });
 
@@ -145,29 +145,92 @@ async function main() {
 
         app.get("/posts", async (req, res) => {
             try {
+                const page = parseInt(req.query.page) || 1;
+                const limit = parseInt(req.query.limit) || 10;
+                const offset = (page - 1) * limit;
+
                 const posts = await Post.findAll({
-                    include: [{ association: "Comments" }]
+                    include: [{ 
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }, {
+                        association: "Comments",
+                        include: [{
+                            association: "User",
+                            attributes: ["id", "username"]
+                        }]
+                    }],
+                    order: [['createdAt', 'DESC']],
+                    limit: limit,
+                    offset: offset
                 });
-                if (!posts) {
-                    res.status(404).json({ message: "Erreur lors de la récupération des Posts" });
-                }
-                if (posts.length <= 0) {
-                    res.status(404).json({ message: "Aucun Post" });
-                }
-                res.status(200).json(posts);
+
+                return res.status(200).json(posts);
             } catch (error) {
-                res.status(500).json({ comment: "Erreur serveur" });
+                console.error(error);
+                res.status(500).json({ message: "Erreur serveur" });
+            }
+        });
+
+        // ----Récupération d'un post par ID
+
+        app.get("/posts/:postId", async (req, res) => {
+            try {
+                const post = await Post.findByPk(req.params.postId, {
+                    include: [{
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }, {
+                        association: "Comments",
+                        include: [{
+                            association: "User",
+                            attributes: ["id", "username"]
+                        }]
+                    }]
+                });
+                if (!post) {
+                    return res.status(404).json({ message: "Post non trouvé" });
+                }
+                res.status(200).json(post);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ message: "Erreur serveur" });
+                return res.status(500).json({ comment: "Erreur serveur" });
             }
         });
 
         //----Création d'un commentaire pour un post
-        app.post("/posts/:postId/comments", async (req, res) => {
+        //ajout de l'authenticate
+        app.post("/posts/:postId/comments", authenticate, async (req, res) => {
             const { postId } = req.params;
             const { content } = req.body;
 
             try {
-                const comment = await Comment.create({ content, postId });
-                res.status(201).json(comment);
+                // On suppose que l'utilisateur est authentifié (cookie JWT)
+                let userId = null;
+                if (req.cookies && req.cookies.jwt) {
+                    try {
+                        const decoded = jwt.verify(req.cookies.jwt, secretKeyJWT);
+                        userId = decoded.id;
+                    } catch (e) {}
+                }
+                // Vérification que l'utilisateur existe bien
+                if (userId) {
+                    const user = await User.findByPk(userId);
+                    if (!user) {
+                        return res.status(401).json({ message: "Utilisateur non trouvé. Veuillez vous reconnecter." });
+                    }
+                }
+                // Si pas d'userId, on laisse Sequelize gérer (pour compatibilité)
+                const comment = await Comment.create(userId ? { content, postId, userId } : { content, postId });
+                // On recharge le commentaire avec l'utilisateur associé pour le front
+                const commentWithUser = await Comment.findByPk(comment.id, {
+                    include: [{
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }]
+                });
+                res.status(201).json(commentWithUser);
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ message: "Erreur serveur" });
@@ -184,11 +247,32 @@ async function main() {
                 }
                 // si l'utilisateur n'est pas le créateur du post et n'est pas admin, on refuse l'accès
                 if (post.userId !== req.user.id && req.user.role !== "admin") {
-                    return res.status(404).json({ message: "Accès refusé" });
+                    return res.status(403).json({ message: "Accès refusé" });
                 }
                 // suppression du post
                 await post.destroy();
                 res.status(200).json({ message: "Post supprimé avec succès" });
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ message: "Erreur serveur" });
+            }
+        });
+
+        // ----Modification d'un post------
+        app.put("/posts/:postId", authenticate, async (req, res) => {
+            try {
+                const post = await Post.findByPk(req.params.postId);
+                if (!post) {
+                    return res.status(404).json({ message: "Post non trouvé" });
+                }
+                // Vérifier que l'utilisateur est le créateur ou admin
+                if (post.userId !== req.user.id && req.user.role !== "admin") {
+                    return res.status(403).json({ message: "Accès refusé" });
+                }
+                // Mettre à jour le contenu
+                if (req.body.content) post.content = req.body.content;
+                await post.save();
+                res.status(200).json({ message: "Post modifié avec succès", post });
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ message: "Erreur serveur" });
@@ -203,7 +287,7 @@ async function main() {
 
                 //  on récupère le commentaire à supprimer 
 
-                const comment = await Comment.findByPk({ where: { id: req.params.commentId } });
+                const comment = await Comment.findByPk(req.params.commentId);
                 if (!comment) {
                     return res.status().json({ message: "Commentaire non trouvée " })
                 } else {
@@ -225,14 +309,24 @@ async function main() {
 
         app.get("/users/:userId/posts", async (req, res) => {
             try {
-                const posts = await Post.findAll({ where: { userId: req.params.userId } });
-                if (posts) {
-                    res.status(200).json(posts)
-                } else {
-                    res.status(404).json({ message: "Erreur lors de la récuperation des posts" })
-                }
+                const posts = await Post.findAll({ 
+                    where: { userId: req.params.userId },
+                    include: [{ 
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }, {
+                        association: "Comments",
+                        include: [{
+                            association: "User",
+                            attributes: ["id", "username"]
+                        }]
+                    }],
+                    order: [['createdAt', 'DESC']]
+                });
+                res.status(200).json(posts);
             } catch (error) {
-
+                console.error(error);
+                res.status(500).json({ message: "Erreur lors de la récupération des posts" });
             }
         })
 
