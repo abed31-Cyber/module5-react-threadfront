@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import CatClawAnimation from './components/CatClawAnimation';
-
+// Fournisseur d'effet de griffe de chat
 function CatClawEffectProvider({ children }) {
   const [visible, setVisible] = useState(false);
   const [soundName, setSoundName] = useState('');
