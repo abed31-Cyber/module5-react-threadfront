@@ -1,221 +1,5 @@
-.post-detail h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 24px;
-    letter-spacing: -1px;
-    color: #fff;
-}
-
-.post-detail h2 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin: 32px 0 16px 0;
-    color: #fff;
-    letter-spacing: -0.5px;
-}
-
-.post-detail p {
-    font-size: 1.08rem;
-    color: #eaeaea;
-    line-height: 1.7;
-    margin: 0 0 12px 0;
-    word-break: break-word;
-}
-
-/* CSS pour l'affichage d'un seul post (détail) */
-.post-detail {
-    background: #1a1a1a;
-    min-height: 100vh;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 0;
-}
-
-.post-title {
-    width: 100%;
-    max-width: 600px;
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 24px;
-    letter-spacing: -1px;
-}
-
-.post-meta {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #888;
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.post-author {
-    color: #fff;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.post-date {
-    color: #888;
-}
-
-.post-content {
-    width: 100%;
-    max-width: 600px;
-    background: #232323;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    padding: 32px;
-    font-size: 18px;
-    color: #fff;
-    margin-bottom: 24px;
-    word-break: break-word;
-}
-
-.delete-btn {
-    margin-left: 12px;
-    background: none;
-    color: #ff6b6b;
-    border: none;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-.delete-btn:hover {
-    color: #ff2222;
-}
-
-/* Comments Section - À déplacer dans comment.css */
-/*
-.comments-section {
-    max-width: 600px;
-    margin: 0 auto;
-    background: rgba(255,255,255,0.03);
-    border-radius: 20px;
-    padding: 24px;
-}
-
-.comments-title {
-    color: #fff;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 24px;
-    text-align: left;
-}
-
-.comments-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.comment-wrapper {
-    position: relative;
-}
-
-.comment-delete {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: black;
-    color: white;
-    border-radius: 10px;
-    border: none;
-    padding: 6px 12px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.no-comments {
-    color: #bbb;
-    font-style: italic;
-    margin-top: 8px;
-}
-*/
-
-/* Comment Form - À déplacer dans comment.css */
-/*
-.comment-form-section {
-    margin-top: 32px;
-}
-
-.comment-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.comment-textarea {
-    width: 100%;
-    border-radius: 16px;
-    padding: 16px;
-    background: #2a2a2a;
-    color: #fff;
-    border: none;
-    font-size: 16px;
-    font-family: 'Josefin Sans', sans-serif;
-    resize: vertical;
-}
-
-.comment-submit-btn {
-    align-self: flex-end;
-    background: #fff;
-    color: #1a1a1a;
-    border: none;
-    border-radius: 16px;
-    padding: 10px 28px;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 4px;
-}
-
-.comment-submit-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.comment-error {
-    color: #ff6b6b;
-    margin-top: 4px;
-}
-
-.comment-success {
-    color: green;
-    margin-top: 4px;
-}
-
-.comment-login-info {
-    margin-top: 16px;
-    color: #888;
-    text-align: center;
-}
-*/
-
-/* General Dark Theme - À déplacer dans index.css */
-/*
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Josefin Sans', sans-serif;
-}
-*/
-
-/* Create Post Container - À déplacer dans CreatePost.css */
-/*
+/* Create Post Container */
 .create-post-container {
-    background: #1a1a1a;
     padding: 40px 20px;
     min-height: 100vh;
     display: flex;
@@ -236,7 +20,6 @@ body {
     font-weight: 700;
     margin-bottom: 50px;
     letter-spacing: -2px;
-    font-family: 'Josefin Sans', sans-serif;
 }
 
 .form-group {
@@ -250,10 +33,8 @@ body {
     padding: 16px 20px;
     border: none;
     border-radius: 24px;
-    background: #2a2a2a;
     color: #888;
     font-size: 14px;
-    font-family: 'Josefin Sans', sans-serif;
     resize: none;
     font-weight: 400;
     transition: all 0.3s ease;
@@ -302,7 +83,6 @@ body {
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-family: 'Josefin Sans', sans-serif;
 }
 
 .submit-btn:hover:not(:disabled) {
@@ -320,11 +100,9 @@ body {
 /* Post Card - À déplacer dans feed.css ou PostCard.css */
 /*
 .post-card {
-    background: #2a2a2a;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
+    background: linear-gradient(142deg,rgba(0, 0, 0, 1) 49%, rgba(162, 162, 168, 1) 100%);
     transition: all 0.3s ease;
+
 }
 
 .post-card:hover {
@@ -421,7 +199,6 @@ body {
     border-radius: 8px;
     background: #2a2a2a;
     color: #fff;
-    font-family: 'Josefin Sans', sans-serif;
     font-size: 14px;
 }
 
@@ -445,7 +222,6 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
-    font-family: 'Josefin Sans', sans-serif;
 }
 
 .save-btn {
@@ -473,13 +249,6 @@ body {
 }
 */
 
-/* Posts List - À déplacer dans feed.css */
-/*
-.posts-list {
-    background: #1a1a1a;
-    padding: 30px 20px;
-    min-height: 100vh;
-}
 
 .loading {
     text-align: center;
@@ -515,10 +284,6 @@ body {
     .profile-icon,
     .chat-icon {
         font-size: 36px;
-    }
-
-    .posts-list {
-        padding: 20px;
     }
 
     .post-card {

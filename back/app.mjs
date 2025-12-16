@@ -99,10 +99,10 @@ async function main() {
                 const email = req.body.email;
                 // on cherche l'utilisateur dans la bdd
                 const user = await User.findOne({ where: { email } });
-                if (!user) return res.status(400).json({ error: "Email incorrect" });
+                if (!user) return res.status(400).json({ message: "Email incorrect" });
                 // on compare le password avec le hash en bdd
                 const valid = await bcrypt.compare(password, user.password);
-                if (!valid) return res.status(400).json({ error: "Mot de passe incorrect" });
+                if (!valid) return res.status(400).json({ message: "Mot de passe incorrect" });
                 // si tout est ok, on génère un token JWT avec les infos utilisateur
                 const token = jwt.sign(
                     { id: user.id, username: user.username, role: user.role },
@@ -149,10 +149,10 @@ async function main() {
                     "content": req.body.content,
                     "userId" : req.user.id
                 });
-                return res.status(201).json({ message: "Post créé avec succès", post });
+                return res.status(201).json({ error: "Post créé avec succès", post });
             } catch (error) {
                 console.error(error);
-                return res.status(500).json({ message: "Erreur serveur" });
+                return res.status(500).json({ error: "Erreur serveur" });
             }
         });
 
@@ -217,7 +217,6 @@ async function main() {
         });
 
         //----Création d'un commentaire pour un post
-        //ajout de l'authenticate
         app.post("/posts/:postId/comments", authenticate, async (req, res) => {
             const { postId } = req.params;
             const { content } = req.body;

@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       setError(err.message);
       setUser(null);
+
       return false;
     }
   };
@@ -71,6 +72,7 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       console.error('Erreur lors du logout serveur', e);
     }
+
     setUser(null);
     setError(null);
   };
