@@ -1,7 +1,4 @@
 /* Styles basiques pour la page Profile */
-body{
-  background-color: #302d2d;
-}
 .profile-container {
   color: #fff;
   min-height: 100vh;
@@ -10,12 +7,10 @@ body{
 }
 
 .post-item {
-
   background: linear-gradient(135deg, #0a0a0a 0%, #464242 100%);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;
- 
 }
 
 .post-header {
@@ -56,6 +51,4 @@ body{
 .bottom-nav{
   display: flex;
   justify-content: space-between;
-
- 
 }

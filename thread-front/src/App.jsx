@@ -25,8 +25,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/createpost" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
-           <Route path="/feed" element={<Feed />} />
-           <Route path='/posts/:postId' element={<PrivateRoute><PostDetail /></PrivateRoute>} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/posts/:postId" element={<PrivateRoute><PostDetail /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
@@ -34,4 +34,3 @@ function App() {
 }
 
 export default App
-
