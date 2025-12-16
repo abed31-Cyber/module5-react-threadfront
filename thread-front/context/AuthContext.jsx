@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+// import { toast } from 'react-toastify';
 
 // Create AuthContext 
 const AuthContext = createContext();
@@ -24,7 +25,6 @@ export function AuthProvider({ children }) {
 // la fonction de connexion pour authentifier l'utilisateur dans toute l'application 
   const login = async ({ email, password }) => {
     try {
-        // appel de l'API pour authentifier l'utilisateur dans la base de données et gérer la session
       const res = await fetch(`http://localhost:3000/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -32,30 +32,39 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ email, password }),
       });
       if (!res.ok) {
-        throw new Error('Identifiants invalides');
+        throw new Error('Erreur lors de la connexion');
       }
-      // Récupération des données utilisateur après une connexion réussie
       const userData = await res.json();
-      localStorage.setItem('user', JSON.stringify(userData)); // Sauvegarder dans localStorage
+      localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
       setError(null);
       return true;
     } catch (err) {
       setError(err.message);
       setUser(null);
-      localStorage.removeItem('user'); // S'assurer que tout est nettoyé en cas d'erreur
+      localStorage.removeItem('user');
       return false;
     }
   };
 // la fonction de déconnexion pour gérer la déconnexion de l'utilisateur dans toute l'application
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch('http://localhost:3000/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (e) {
+      // Optionnel : log l'erreur mais on continue le reset local
+      console.error('Erreur lors du logout serveur', e);
+    }
     localStorage.removeItem('user'); // Supprimer de localStorage
     setUser(null);
     setError(null);
   };
 // Fournir le contexte d'authentification aux composants enfants
+  const isAuthenticated = !!user;
   return (
-    <AuthContext.Provider value={{ user, error, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, error, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

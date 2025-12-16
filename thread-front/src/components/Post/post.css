@@ -63,7 +63,6 @@
     margin-bottom: 15px;
 }
 
-/* Timestamp */
 .timestamp {
     color: #888;
     font-size: 13px;
@@ -71,7 +70,6 @@
     padding: 0 20px;
 }
 
-/* Submit Button */
 .submit-btn {
     width: 200px;
     display: block;
@@ -97,8 +95,10 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+*/
 
-/* Post Card */
+/* Post Card - À déplacer dans feed.css ou PostCard.css */
+/*
 .post-card {
     background: linear-gradient(142deg,rgba(0, 0, 0, 1) 49%, rgba(162, 162, 168, 1) 100%);
     transition: all 0.3s ease;
@@ -182,8 +182,10 @@
 .post-date {
     color: #666;
 }
+*/
 
-/* Edit Form */
+/* Edit Form - À déplacer dans EditPost.css */
+/*
 .edit-form {
     display: flex;
     flex-direction: column;
@@ -245,6 +247,7 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+*/
 
 
 .loading {
@@ -260,8 +263,10 @@
     color: #666;
     font-size: 16px;
 }
+*/
 
-/* Responsive */
+/* Responsive - À déplacer dans les fichiers appropriés */
+/*
 @media (max-width: 768px) {
     .create-post-container {
         padding: 20px;
@@ -295,8 +300,10 @@
         flex-direction: column;
     }
 }
+*/
 
-/* Animations */
+/* Animations - À déplacer dans index.css ou animations.css */
+/*
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -311,8 +318,10 @@
 .post-card {
     animation: fadeIn 0.3s ease-out;
 }
+*/
 
-/* Post Link Styles */
+/* Post Link Styles - À déplacer dans feed.css */
+/*
 .post-link {
     color: inherit;
     text-decoration: none;
@@ -329,8 +338,10 @@
 .post-content {
     cursor: pointer;
 }
+*/
 
-/* View Details Button */
+/* View Details Button - À déplacer dans feed.css */
+/*
 .post-actions-bottom {
     margin-top: 15px;
     padding-top: 15px;
@@ -355,3 +366,4 @@
     color: white;
     text-decoration: none;
 }
+*/

@@ -1,12 +1,9 @@
-import { useState, useEffect, useContext } from "react";
-import AuthContext from "../../../context/AuthContext";
+import { useContext, useState, useEffect } from "react";
+import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-import logout from "../../utils/logout";
-import './Profile.css';
-
-
+import AuthContext from "../../../context/AuthContext";
 export default function Profile() {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,6 +27,10 @@ export default function Profile() {
         });
 
         if (!postsResponse.ok) {
+          if (postsResponse.status === 401) toast.error('😾 Mrrrow ! Tu n’es pas autorisé à voir ces posts.');
+          else if (postsResponse.status === 403) toast.error('😼 Grrr ! Accès refusé, ce territoire n’est pas pour toi.');
+          else if (postsResponse.status === 404) toast.error('🐾 Miaou ? Ces posts sont introuvables, essaie ailleurs !');
+          else toast.error('😿 Oups, impossible de récupérer les posts.');
           throw new Error('Erreur lors de la récupération des posts');
         }
 
@@ -55,6 +56,10 @@ export default function Profile() {
         });
 
         if (!response.ok) {
+          if (response.status === 401) toast.error('😾 Mrrrow ! Tu n’as pas le droit de griffer ce post.');
+          else if (response.status === 403) toast.error('😼 Grrr ! Ce post est protégé, pas touche !');
+          else if (response.status === 404) toast.error('🐾 Miaou ? Ce post a disparu, introuvable !');
+          else toast.error('😿 Impossible de supprimer ce post.');
           throw new Error('Erreur lors de la suppression');
         }
 
@@ -78,6 +83,10 @@ export default function Profile() {
       });
 
       if (!response.ok) {
+        if (response.status === 401) toast.error('😾 Mrrrow ! Tu n’as pas le droit de modifier ce post.');
+        else if (response.status === 403) toast.error('😼 Grrr ! Modification interdite, ce n’est pas ta litière.');
+        else if (response.status === 404) toast.error('🐾 Miaou ? Ce post n’existe plus, va voir ailleurs !');
+        else toast.error('😿 Impossible de modifier ce post.');
         throw new Error('Erreur lors de la modification');
       }
 
@@ -195,8 +204,8 @@ export default function Profile() {
 
         <div  className="deco-button">
           <button onClick={logout} aria-label="Déconnexion">
-  <img src="/src/assets/icons/logout.svg" alt="Déconnexion" width="24" height="24" />
-</button>
+            <img src="/src/assets/icons/logout.svg" alt="Déconnexion" width="24" height="24" />
+          </button>
         </div>
 
         <button 
@@ -211,4 +220,4 @@ export default function Profile() {
       </div>
     </div>
   );
-};
+}

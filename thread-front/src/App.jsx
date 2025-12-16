@@ -1,5 +1,8 @@
 import './App.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from '../context/AuthContext.jsx'
+import CatClawEffectProvider from './CatClawEffectProvider';
 import { BrowserRouter, Routes, Route, Link} from 'react-router-dom'
 import Profile from './components/profile/Profile.jsx'
 import Register from './components/Register.jsx'
