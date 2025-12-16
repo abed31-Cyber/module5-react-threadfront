@@ -5,16 +5,19 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-
+// chargement des variables d'environnement
 dotenv.config();
+// je definis la clé secrète pour le JWT
 const secretKeyJWT = process.env.JWT_SECRET;
-
+// je crée un middleware pour authentifier les requêtes
 function authenticate(req, res, next) {
-
+    // je récupère le token JWT depuis les cookies
     const token = req.cookies.jwt;
+    // si pas de token, on renvoie une erreur 401
     if (!token)
         return res.status(401).json({ message: " non authentifié" });
     try {
+        // je vérifie le token et je décode les informations utilisateur
         const decoded = jwt.verify(token, secretKeyJWT);
         req.user = decoded;
         next();
@@ -23,13 +26,18 @@ function authenticate(req, res, next) {
     }
 }
 
-
+// ma fonction principale pour démarrer le serveur qui va charger Sequelize et définir les routes
 async function main() {
     try {
+        // je charge Sequelize et mes modèles
         const { sequelize, models } = await loadSequelize();
+        // je synchronise la base de données (création des tables si elles n'existent pas)
         const { User, Post, Comment } = models;
-
+        // je démarre la synchronisation de la base de données
+        await sequelize.sync();
+        // je crée une instance d'Express pour mon serveur HTTP  
         const app = express();
+        // ici le middleware pour parser le JSON, les cookies et gérer le CORS
         app.use(express.json());
         app.use(cookieParser());
         app.use(cors({
@@ -38,7 +46,7 @@ async function main() {
         }));
 
         // ------------REGISTER-------------
-
+        // route pour l'inscription d'un nouvel utilisateur
         app.post("/register", async (req, res) => {
             try {
                 // Récupère username, email et password de la requête utilisateur
@@ -72,7 +80,7 @@ async function main() {
                     httpOnly: true,
                     sameSite: "lax"
                 });
-
+                // Réponse avec les informations de l'utilisateur (sans le mot de passe)
                 res.status(201).json({ message: "Compte créé", user: { id: user.id, username: user.username, email: user.email } });
             } catch (err) {
                 console.error(err);
@@ -82,7 +90,7 @@ async function main() {
 
         //---------------LOGIN--------------
 
-
+        // route pour la connexion d'un utilisateur existant
         app.post("/login", async (req, res) => {
             try {
                 // Récupère email et password de la requête utilisateur
@@ -101,34 +109,42 @@ async function main() {
                     secretKeyJWT,
                     { expiresIn: "1h" }
                 );
-                // on envoie le token dans un cookie hhttpOnly et sameSite lax
+                // on envoie le token dans un cookie hhttpOnly et sameSite lax(protection en plus)
                 res.cookie("jwt", token, {
                     httpOnly: true,
                     sameSite: "lax"
                 });
-
+                // on renvoie une réponse avec les infos utilisateur (sans le mot de passe)
                 res.json({ message: "Connecté", user: { id: user.id, username: user.username, email: user.email } });
             } catch (err) {
                 console.error(err);
                 res.status(500).json({ message: "Erreur serveur" });
             }
         });
+        // ---------GET ME (récupérer utilisateur connecté)----------
+        // route pour récupérer les informations de l'utilisateur connecté
+        app.get('/me', authenticate, (req, res) => {
+          // Le middleware 'authenticate' a déjà vérifié le token
+          // et a placé les informations de l'utilisateur dans req.user.
+          res.json(req.user);
+        });
 
 
         // ----------LOGOUT----------------
-
+        // route pour la déconnexion de l'utilisateur
         app.post("/logout", (req, res) => {
             res.clearCookie("jwt");
             res.json({ message: "Déconnecté" });
         });
 
         //------création d'un post------------
-
+        // route pour créer un nouveau post (authentifiée) on ajoute le middleware authenticate
         app.post("/posts", authenticate, async (req, res) => {
             try {
                 if (!req.body || !req.body.content) {
                     return res.status(400).json({ message: "Pour créer un post, un contenu est requis" });
                 }
+                // on crée le post avec le userId de l'utilisateur authentifié
                 const post = await Post.create({
                     "content": req.body.content,
                     "userId" : req.user.id
@@ -176,6 +192,7 @@ async function main() {
 
         app.get("/posts/:postId", async (req, res) => {
             try {
+                // on récupère le post avec les commentaires associés avec la fonction findByPk et les associations 
                 const post = await Post.findByPk(req.params.postId, {
                     include: [{
                         association: "User",
@@ -237,6 +254,7 @@ async function main() {
         });
 
         // ---suppresion d'un post------
+        // route pour supprimer un post par ID (authentifiée)
         app.delete("/posts/:postId", authenticate, async (req, res) => {
             try {
                 // je recupère le post à supprimer depuis les paramètres de la requête
@@ -258,8 +276,10 @@ async function main() {
         });
 
         // ----Modification d'un post------
+        // route pour modifier un post par ID (authentifiée) avec le middleware authenticate
         app.put("/posts/:postId", authenticate, async (req, res) => {
             try {
+                // je récupère le post à modifier depuis les paramètres de la requête
                 const post = await Post.findByPk(req.params.postId);
                 if (!post) {
                     return res.status(404).json({ message: "Post non trouvé" });
@@ -280,11 +300,12 @@ async function main() {
 
 
         // ----suppression d'un commentaire
+        // route pour supprimer un commentaire par ID (authentifiée) avec le middleware authenticate
         app.delete("/comments/:commentId", authenticate, async (req, res) => {
 
             try {
 
-                //  on récupère le commentaire à supprimer 
+                //  on récupère le commentaire à supprimer depuis les paramètres de la requête
 
                 const comment = await Comment.findByPk(req.params.commentId);
                 if (!comment) {
@@ -330,6 +351,7 @@ async function main() {
         })
 
         // Start serveur
+        // je démarre le serveur sur le port défini dans les variables d'environnement ou 3000 par défaut
 
         app.listen(process.env.PORT || 3000, () => {
             console.log(`Serveur démarré sur http://localhost:${process.env.PORT || 3000}`);
@@ -339,5 +361,5 @@ async function main() {
         console.error("Erreur de chargement Sequelize:", error);
     }
 }
-
+// j'appelle ma fonction principale pour démarrer le serveur
 main();

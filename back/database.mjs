@@ -9,11 +9,11 @@ export async function loadSequelize() {
     try {
         // connection  a la bdd
         const sequelize = new Sequelize(process.env.DATABASE_URL);
-        // authentification
+        // authentification de la bdd avec sequelize
         await sequelize.authenticate();
         console.log("Connexion à la base OK");
 
-        // les models
+        // je définis mes modèles (tables) ici les utilisateurs
         const User = sequelize.define("User", {
             username: { type: DataTypes.STRING, allowNull: false },
             email: { type: DataTypes.STRING, allowNull: false },
@@ -31,26 +31,27 @@ export async function loadSequelize() {
             }
            
         });
-
+        // je definis mes modèles (tables) ici les posts
         const Post = sequelize.define("Post", {
             content: { type: DataTypes.STRING, allowNull: false }
         });
-
+        // je definis mes modèles (tables) ici les commentaires
         const Comment = sequelize.define("Comment", {
             content: { type: DataTypes.STRING }
         });
 
-        // RELATIONS
+        // je definis les relations entre les modèles associations entre les tables
+        // j'associer les posts aux utilisateurs
         User.hasMany(Post, { foreignKey: "userId" });
         Post.belongsTo(User, { foreignKey: "userId" });
-
+        // j'associer les commentaires aux utilisateurs   
         User.hasMany(Comment, { foreignKey: "userId" });
         Comment.belongsTo(User, { foreignKey: "userId" });
-
+        // j'associer les commentaires aux posts
         Post.hasMany(Comment, { foreignKey: "postId" });
         Comment.belongsTo(Post, { foreignKey: "postId" });
 
-
+        // Synchronisation des modèles avec la base de données
         await sequelize.sync( {force: true} );
 
         // Insérer des données d'exemple
