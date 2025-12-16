@@ -133,10 +133,10 @@ async function main() {
                     "content": req.body.content,
                     "userId" : req.user.id
                 });
-                return res.status(201).json({ message: "Post créé avec succès", post });
+                return res.status(201).json({ error: "Post créé avec succès", post });
             } catch (error) {
                 console.error(error);
-                return res.status(500).json({ message: "Erreur serveur" });
+                return res.status(500).json({ error: "Erreur serveur" });
             }
         });
 
@@ -200,7 +200,7 @@ async function main() {
         });
 
         //----Création d'un commentaire pour un post
-        app.post("/posts/:postId/comments", async (req, res) => {
+        app.post("/posts/:postId/comments", authenticate, async (req, res) => {
             const { postId } = req.params;
             const { content } = req.body;
 
