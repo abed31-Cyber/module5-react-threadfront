@@ -6,7 +6,7 @@ import AuthContext from "../../context/AuthContext";
 import "./Login.css";
 
 export default function Login() {
-    const { login } = useContext(AuthContext);
+    const { login, message } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassWord] = useState("");
     // const [error, setError] = useState("");
@@ -31,7 +31,7 @@ export default function Login() {
             }
         } catch (error) {
             console.error("Erreur lors de la connexion :", error);
-            toast.error("😿 Erreur serveur lors de la connexion");
+            toast.error("😿 Erreur serveur lors de la connexion:");
             triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
         }
     };

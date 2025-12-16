@@ -11,6 +11,7 @@
 
 .create-post-form {
     width: 100%;
+    color: white;
     max-width: 450px;
 }
 
@@ -263,7 +264,7 @@
     color: #666;
     font-size: 16px;
 }
-*/
+
 
 /* Responsive - À déplacer dans les fichiers appropriés */
 /*

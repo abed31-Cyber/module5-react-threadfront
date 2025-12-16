@@ -61,6 +61,7 @@ const CreatePost = ({ onPostCreated }) => {
     return (
         <div className="create-post-container">
             <form onSubmit={handleSubmit} className="create-post-form">
+                <h1>|New Post</h1>
                 {error && <div className="error-message">{error}</div>}
                 {success && <div className="success-message">{success}</div>}
                 <textarea
