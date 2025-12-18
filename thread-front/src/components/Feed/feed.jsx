@@ -68,26 +68,26 @@ const Feed = () => {
 
   useEffect(() => {
     const loadPosts = async () => {
-      console.log('🔄 Chargement des posts, page:', page, 'API URL:', API_BASE_URL);
+      console.log(' Chargement des posts, page:', page, 'API URL:', API_BASE_URL);
       setLoading(true);
       setError(null);
 
       try {
         const response = await fetch(
-          `${API_BASE_URL}/posts?page=${page}&limit=${POSTS_PER_PAGE}`
+          `{API_BASE_URL}/posts?page=${page}&limit=${POSTS_PER_PAGE}`
         );
 
-        console.log('📡 Réponse API posts:', response.status, response.ok);
+        console.log(' Réponse API posts:', response.status, response.ok);
 
         if (!response.ok) {
-          console.error('❌ Erreur API posts:', response.status, response.statusText);
+          console.error(' Erreur API posts:', response.status, response.statusText);
           toast.error('😿 Impossible de charger les posts.');
           triggerCatErrorEffect("ANMLCat_Miaulement chat 2 (ID 1890)_LS.mp3");
           throw new Error(`Erreur HTTP: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('📊 Posts reçus:', data.length, data);
+        console.log(' Posts reçus:', data.length, data);
         
         if (data.length === 0 || data.length < POSTS_PER_PAGE) {
           setHasMore(false);
@@ -98,7 +98,7 @@ const Feed = () => {
             (newPost) => !prevPosts.some((post) => post.id === newPost.id)
           );
           const result = page === 1 ? newPosts : [...prevPosts, ...newPosts];
-          console.log('📝 Posts finaux à afficher:', result.length);
+          console.log(' Posts finaux à afficher:', result.length);
           return result;
         });
       } catch (err) {
