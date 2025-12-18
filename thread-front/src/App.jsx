@@ -9,11 +9,12 @@ import Feed from './components/Feed/feed.jsx'
 import CreatePost from './components/Post/CreatePost.jsx'
 import PostDetail from './components/Post/PostDetail.jsx'
 import PrivateRoute from './components/PrivateRoute';
+import { AuthProvider } from '../context/AuthContext.jsx';
 
 function App() {
 
   return (
-    <>
+    <AuthProvider>
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />
       <BrowserRouter>
       {/* <nav>
@@ -31,7 +32,7 @@ function App() {
           <Route path="/posts/:postId" element={<PrivateRoute><PostDetail /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
-    </>
+    </AuthProvider>
   )
 }
 
