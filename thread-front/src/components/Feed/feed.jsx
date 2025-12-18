@@ -74,7 +74,15 @@ const Feed = () => {
 
       try {
         const response = await fetch(
-          `{API_BASE_URL}/posts?page=${page}&limit=${POSTS_PER_PAGE}`
+          `${API_BASE_URL}/posts?page=${page}&limit=${POSTS_PER_PAGE}`,
+          {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+          }
         );
 
         console.log(' Réponse API posts:', response.status, response.ok);
@@ -86,7 +94,11 @@ const Feed = () => {
           throw new Error(`Erreur HTTP: ${response.status}`);
         }
 
-        const data = await response.json();
+        // Vérifier le contenu avant de parser
+        const responseText = await response.text();
+        console.log(' Contenu brut de la réponse:', responseText);
+        
+        const data = JSON.parse(responseText);
         console.log(' Posts reçus:', data.length, data);
         
         if (data.length === 0 || data.length < POSTS_PER_PAGE) {
