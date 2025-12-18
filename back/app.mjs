@@ -149,7 +149,20 @@ async function main() {
                     "content": req.body.content,
                     "userId" : req.user.id
                 });
-                return res.status(201).json({ error: "Post créé avec succès", post });
+                // on récupère le post avec les associations
+                const newPost = await Post.findByPk(post.id, {
+                    include: [{
+                        association: "User",
+                        attributes: ["id", "username"]
+                    }, {
+                        association: "Comments",
+                        include: [{
+                            association: "User",
+                            attributes: ["id", "username"]
+                        }]
+                    }]
+                });
+                return res.status(201).json(newPost);
             } catch (error) {
                 console.error(error);
                 return res.status(500).json({ error: "Erreur serveur" });
