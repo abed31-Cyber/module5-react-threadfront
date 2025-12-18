@@ -78,11 +78,7 @@ const CreatePost = ({ onPostCreated }) => {
         <div className="create-post-container">
             {/* EN-TÊTE AVEC ICÔNE */}
             <div className="create-post-header">
-                <div className="create-post-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" strokeLinejoin="round" strokeLinecap="round" />
-                    </svg>
-                </div>
+            
                 <h1>New Post</h1>
             </div>
 
