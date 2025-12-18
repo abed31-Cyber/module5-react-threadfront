@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { toast } from 'react-toastify';
 import { triggerCatErrorEffect } from '../../utils/catEffect';
 import { useNavigate } from 'react-router-dom';
-import FeedCard from './PostCard.jsx';
+import FeedCard from './FeedCard.jsx';
 import './feed.css';
 import AuthContext from '../../../context/AuthContext.jsx';
 
