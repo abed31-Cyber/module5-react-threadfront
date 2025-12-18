@@ -2,3 +2,4 @@
 .env
 create_issues.py
 doc/
+back/node_modules

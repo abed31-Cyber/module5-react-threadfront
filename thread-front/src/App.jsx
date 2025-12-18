@@ -16,25 +16,22 @@ function App() {
 
   return (
     <AuthProvider>
-      <CatClawEffectProvider>
-        <BrowserRouter>
-          {/* <nav>
-           <Link to="/">Accueil</Link>
-           <Link to="/profile">profile</Link>
-           <Link to="/">feed</Link>
-          </nav> */}
-          <Routes>
-            <Route path="/" element={<Feed />} />
-            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/createpost" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
-             <Route path="/feed" element={<Feed />} />
-            <Route path='/posts/:postId' element={<PostDetail />} />
-          </Routes>
-          <ToastContainer position="top-right" autoClose={4000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
-        </BrowserRouter>
-      </CatClawEffectProvider>
+      <BrowserRouter>
+      {/* <nav>
+       <Link to="/">Accueil</Link>
+       <Link to="/profile">profile</Link>
+       <Link to="/">feed</Link>
+      </nav> */}
+        <Routes>
+          <Route path="/" element={<Feed />} />
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/createpost" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/posts/:postId" element={<PrivateRoute><PostDetail /></PrivateRoute>} />
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   )
 }
