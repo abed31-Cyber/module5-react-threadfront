@@ -1,20 +1,29 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-/* Mode Dark */
-body{
-    background-color: #333333;
-    color: #ffffff;
-    font-family: "Josefin Sans", sans-serif;
-    height: 100vh;
-    padding: 3rem;
+body {
+  background-color: #333333;
+  color: rgb(255, 255, 255);
+  font-family: 'Josefin Sans', sans-serif;
+  height: 100vh;
+  padding: 3rem;
 }
-
-/* Bottom Navigation (visible dans l'image) */
-.feed-container::after {
-  content: '';
-  display: block;
-  height: 80px;
+h1,h2,h3,h4,h5 {
+  font-size: 3rem;
+  margin: 2rem 0 7rem 0;
+}
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-top: 1px solid #333;
+  z-index: 1000;
 }

@@ -157,6 +157,14 @@
   font-size: 14px;
 }
 
+
+/* Bottom Navigation (visible dans l'image) */
+.feed-container ::before {
+  content: '';
+  display: block;
+  height: 80px;
+}
+
 .bottom-navigation {
   position: fixed;
   bottom: 20px;

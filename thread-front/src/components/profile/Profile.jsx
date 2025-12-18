@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
+import './Profile.css';
 export default function Profile() {
   const { user, logout } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);

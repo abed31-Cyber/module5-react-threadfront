@@ -3,7 +3,6 @@
   color: #fff;
   min-height: 100vh;
   padding: 24px;
-  font-family: 'Josefin Sans', sans-serif;
 }
 
 .post-item {
@@ -45,10 +44,4 @@
 .feed-button{
   display: flex;
   align-items: center;
-  
-}
-
-.bottom-nav{
-  display: flex;
-  justify-content: space-between;
 }

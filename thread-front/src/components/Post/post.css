@@ -1,369 +1,201 @@
-/* Create Post Container */
-.create-post-container {
-    padding: 40px 20px;
+.post-detail h1 {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.post-detail h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 32px 0 16px 0;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.post-detail p {
+    color: #eaeaea;
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin: 0 0 12px 0;
+    word-break: break-word;
+}
+.post-detail .post-comments p {
+    color: rgb(0, 0, 0);
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin: 0 0 12px 0;
+    word-break: break-word;
+}
+/* CSS pour l'affichage d'un seul post (détail) */
+.post-detail {
     min-height: 100vh;
+    color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    position: relative;
+    padding: 40px 20px;
+    padding-bottom: 120px;
 }
 
-.create-post-form {
+.post-title {
     width: 100%;
-    max-width: 450px;
-}
-
-.create-post-form h2 {
-    color: #ffffff;
-    font-size: 56px;
+    max-width: 600px;
+    font-size: 2.2rem;
     font-weight: 700;
-    margin-bottom: 50px;
-    letter-spacing: -2px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 16px 20px;
-    border: none;
-    border-radius: 24px;
-    color: #888;
-    font-size: 14px;
-    resize: none;
-    font-weight: 400;
-    transition: all 0.3s ease;
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-    color: #777;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    background: #333;
-    color: #fff;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
-}
-
-.title-input {
-    height: 50px !important;
-    margin-bottom: 15px;
-}
-
-.content-textarea {
-    height: 180px !important;
-    margin-bottom: 15px;
-}
-
-.timestamp {
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 20px;
-    padding: 0 20px;
-}
-
-.submit-btn {
-    width: 200px;
-    display: block;
-    margin: 0 auto 30px;
-    padding: 14px 32px;
-    background: #ffffff;
-    color: #000;
-    border: none;
-    border-radius: 28px;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.submit-btn:hover:not(:disabled) {
-    background: #f0f0f0;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
-}
-
-.submit-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-*/
-
-/* Post Card - À déplacer dans feed.css ou PostCard.css */
-/*
-.post-card {
-    background: linear-gradient(142deg,rgba(0, 0, 0, 1) 49%, rgba(162, 162, 168, 1) 100%);
-    transition: all 0.3s ease;
-
-}
-
-.post-card:hover {
-    background: #333;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-.post-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
-}
-
-.post-header h3 {
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0;
-    flex: 1;
-}
-
-.post-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.edit-btn,
-.delete-btn {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 4px 8px;
-    transition: transform 0.2s;
-}
-
-.edit-btn:hover:not(:disabled),
-.delete-btn:hover:not(:disabled) {
-    transform: scale(1.2);
+    margin-bottom: 24px;
+    letter-spacing: -1px;
 }
 
 .post-author {
-    color: #999;
-    font-size: 13px;
-    margin: 8px 0;
-}
-
-.post-content {
-    color: #ddd;
-    line-height: 1.6;
-    margin: 12px 0;
-    font-size: 14px;
-    white-space: pre-wrap;
-}
-
-.post-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #444;
-    color: #777;
-    font-size: 12px;
-}
-
-.comment-count {
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.comment-count:hover {
     color: #fff;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .post-date {
-    color: #666;
-}
-*/
-
-/* Edit Form - À déplacer dans EditPost.css */
-/*
-.edit-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.edit-input,
-.edit-textarea {
-    padding: 12px;
-    border: 2px solid #4CAF50;
-    border-radius: 8px;
-    background: #2a2a2a;
-    color: #fff;
-    font-size: 14px;
-}
-
-.edit-textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.edit-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.save-btn,
-.cancel-btn {
-    flex: 1;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.save-btn {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.save-btn:hover:not(:disabled) {
-    background-color: #45a049;
-}
-
-.cancel-btn {
-    background-color: #444;
-    color: #fff;
-}
-
-.cancel-btn:hover:not(:disabled) {
-    background-color: #555;
-}
-
-.save-btn:disabled,
-.cancel-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-*/
-
-
-.loading {
-    text-align: center;
-    padding: 40px;
     color: #888;
-    font-size: 16px;
-}
-
-.no-posts {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-    font-size: 16px;
-}
-*/
-
-/* Responsive - À déplacer dans les fichiers appropriés */
-/*
-@media (max-width: 768px) {
-    .create-post-container {
-        padding: 20px;
-    }
-
-    .create-post-form h2 {
-        font-size: 40px;
-        margin-bottom: 30px;
-    }
-
-    .post-footer {
-        gap: 40px;
-    }
-
-    .profile-icon,
-    .chat-icon {
-        font-size: 36px;
-    }
-
-    .post-card {
-        margin: 0 0 12px 0;
-    }
-
-    .post-meta {
-        flex-direction: column;
-        gap: 8px;
-        align-items: flex-start;
-    }
-
-    .edit-buttons {
-        flex-direction: column;
-    }
-}
-*/
-
-/* Animations - À déplacer dans index.css ou animations.css */
-/*
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.post-card {
-    animation: fadeIn 0.3s ease-out;
-}
-*/
-
-/* Post Link Styles - À déplacer dans feed.css */
-/*
-.post-link {
-    color: inherit;
-    text-decoration: none;
-    display: block;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.post-link:hover {
-    color: #007bff;
-    text-decoration: underline;
 }
 
 .post-content {
-    cursor: pointer;
-}
-*/
-
-/* View Details Button - À déplacer dans feed.css */
-/*
-.post-actions-bottom {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #333;
-}
-
-.view-details-btn {
-    display: inline-block;
-    background: #007bff;
-    color: white;
-    padding: 8px 16px;
+    width: 100%;
+    max-width: 600px;
+    background: linear-gradient(142deg,rgba(0, 0, 0, 1) 49%, rgba(162, 162, 168, 1) 100%);;
     border-radius: 20px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background 0.2s ease;
-    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    padding: 32px;
+    margin-bottom: 24px;
+    word-break: break-word;
+}
+.post-content p {
+    display: flex;
+    flex-direction: column;
 }
 
-.view-details-btn:hover {
-    background: #0056b3;
-    color: white;
-    text-decoration: none;
+.delete-btn {
+    margin-left: 12px;
+    background: none;
+    color: #ff6b6b;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.2s;
 }
-*/
+.delete-btn:hover {
+    color: #ff2222;
+}
+.comment-author {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #000;
+}
+
+.comments-header {
+    align-self: flex-start;
+    font-size: 16px;
+}
+.post-comments {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 140px;
+}
+.post-comments ul {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+}
+
+.post-comments li {
+    width: 100%;
+    background: linear-gradient(142deg,rgba(245, 242, 242, 1) 49%, rgba(114, 114, 130, 1) 100%);
+    border-radius: 17px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    color: #000;
+    padding: 1.5rem;
+    display: block;
+}
+
+.post-text {
+    display: block;
+}
+
+.comment-form-section {
+    width: 100%;
+    max-width: 600px;
+    margin: 24px auto;
+    background: linear-gradient(90deg, rgba(228, 228, 228, 1) 0%, rgba(229, 229, 229, 1) 50%, rgba(150, 150, 150, 1) 100%);
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    background: white;
+    color: black;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #888;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.comment-submit-btn {
+    margin-top: 12px;
+    padding: 10px 24px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.comment-submit-btn:hover {
+    opacity: 0.8;
+}
+
+.comment-submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.comment-error {
+    color: #d32f2f;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.comment-success {
+    color: #388e3c;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.comment-login-info {
+    width: 100%;
+    max-width: 600px;
+    margin: 24px auto;
+    background: linear-gradient(90deg, rgba(228, 228, 228, 1) 0%, rgba(229, 229, 229, 1) 50%, rgba(150, 150, 150, 1) 100%);
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: black;
+    font-weight: 600;
+}

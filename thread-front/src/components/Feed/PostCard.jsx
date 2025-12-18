@@ -43,12 +43,13 @@ const FeedCard = ({ post }) => {
           {getInitials(author)}
         </div>
         <div className="post-author-info">
-          <h3 className="post-author">{author}</h3>
+          {/* Author removed from header - will be displayed with content */}
         </div>
       </div>
       
       <div className="post-content">
-        {content}
+        <strong className="post-author">@{author}</strong>
+        <p>{content}</p>
       </div>
       
       <div className="post-footer">
