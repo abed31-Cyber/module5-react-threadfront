@@ -1,8 +1,6 @@
 import './App.css'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AuthProvider } from '../context/AuthContext.jsx'
-import CatClawEffectProvider from './CatClawEffectProvider';
 import { BrowserRouter, Routes, Route, Link} from 'react-router-dom'
 import Profile from './components/profile/Profile.jsx'
 import Register from './components/Register.jsx'
@@ -15,7 +13,8 @@ import PrivateRoute from './components/PrivateRoute';
 function App() {
 
   return (
-    <AuthProvider>
+    <>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />
       <BrowserRouter>
       {/* <nav>
        <Link to="/">Accueil</Link>
@@ -32,7 +31,7 @@ function App() {
           <Route path="/posts/:postId" element={<PrivateRoute><PostDetail /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    </>
   )
 }
 
