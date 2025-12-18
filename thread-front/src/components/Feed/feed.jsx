@@ -196,16 +196,13 @@ const Feed = () => {
 
       <div className="posts-list">
         {posts.map((post) => (
-          <div
+          <FeedCard 
             key={post.id}
+            post={post} 
             onClick={() => !post.optimistic && navigate(`/posts/${post.id}`)}
             style={{ cursor: post.optimistic ? 'wait' : 'pointer', opacity: post.optimistic ? 0.6 : 1 }}
-          >
-            <FeedCard post={post} />
-            {post.optimistic && (
-              <div style={{ color: '#888', fontSize: 12, marginTop: 4 }}>Envoi...</div>
-            )}
-          </div>
+            optimistic={post.optimistic}
+          />
         ))}
       </div>
 

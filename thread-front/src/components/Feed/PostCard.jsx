@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FeedCard = ({ post }) => {
+const FeedCard = ({ post, onClick, style, optimistic }) => {
   // Format date: HH:MM - DD Month YY (comme dans l'image)
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -37,7 +37,7 @@ const FeedCard = ({ post }) => {
   const createdAt = post.createdAt;
 
   return (
-    <div className="post-card">
+    <div className="post-card" onClick={onClick} style={style}>
       <div className="post-header">
         <div className="post-avatar">
           {getInitials(author)}
@@ -54,6 +54,9 @@ const FeedCard = ({ post }) => {
       
       <div className="post-footer">
         <span className="post-date">{formatDate(createdAt)}</span>
+        {optimistic && (
+          <div style={{ color: '#888', fontSize: 12, marginTop: 4 }}>Envoi...</div>
+        )}
       </div>
     </div>
   );
@@ -72,6 +75,9 @@ FeedCard.propTypes = {
     Comments: PropTypes.array,
     comments: PropTypes.number,
   }).isRequired,
+  onClick: PropTypes.func,
+  style: PropTypes.object,
+  optimistic: PropTypes.bool,
 };
 
 export default FeedCard;
