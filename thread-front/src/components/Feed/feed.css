@@ -172,7 +172,7 @@
 }
 
 /* Bottom Navigation (visible dans l'image) */
-.feed-container::after {
+.feed-container ::before {
   content: '';
   display: block;
   height: 80px;

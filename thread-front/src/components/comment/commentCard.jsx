@@ -67,11 +67,9 @@ export default function CommentCard({ userNameProps, commentaryProps }) {
     // -----------------------
     return (
         <div className="comment">
-            <strong><h4>@{userName}</h4></strong>
-
-            <p>{comment.content}</p>
-
-            <p>{formatDate(comment.createdAt)}</p>
+            <div className="comment-author">@{userName}</div>
+            <div className="comment-content">{comment.content}</div>
+            <div className="comment-date">{formatDate(comment.createdAt)}</div>
 
             {/* Attention ici: onClick DOIT être une fonction */}
             <button onClick={() => setShowConfirm(true)}>supprimer</button>

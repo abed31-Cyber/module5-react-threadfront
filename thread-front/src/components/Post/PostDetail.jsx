@@ -167,8 +167,12 @@ const PostDetail = () => {
         <h1>|Post</h1>
       </div>
       <div className="post-content">
-        <span className="post-author">{post.User?.username || "Anonyme"}</span>
-        <p>{post.content}</p>
+        <span className="post-author">
+          {post.User?.username || "Anonyme"}
+        </span>
+        <p className="post-text">
+          {post.content}
+        </p>
         <span className="post-date">
           {new Date(post.createdAt).toLocaleString("fr-FR", {
             hour: "2-digit",
@@ -182,16 +186,14 @@ const PostDetail = () => {
           </button>
         )}
       </div>
-      <section className="post-comments">
         <div
           className="comments-header"
-          style={{
+            style={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "start",
             gap: 8,
             margin: "24px 0 16px 0",
-          }}
-        >
+          }}>
           <span style={{ fontSize: "1.2rem", fontWeight: 600 }}>
             {post.Comments ? post.Comments.length : 0}
           </span>
@@ -202,8 +204,7 @@ const PostDetail = () => {
             stroke="currentColor"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            style={{ verticalAlign: "middle" }}
-          >
+            style={{ verticalAlign: "middle" }}>
             <path
               d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
               strokeLinejoin="round"
@@ -211,6 +212,7 @@ const PostDetail = () => {
             />
           </svg>
         </div>
+      <section className="post-comments">
         {post.Comments && post.Comments.length > 0 ? (
           <ul>
             {post.Comments.map((comment) => {
@@ -272,11 +274,12 @@ const PostDetail = () => {
               return (
                 <li
                   key={comment.id}
-                  style={{ display: "flex", alignItems: "center", gap: 8 }}
-                >
+                  style={{ display: "flex", flexDirection: "column", gap: 8 }} >
                   <p>
-                    <strong>@{comment.User?.username || "Anonyme"}</strong>{" "}
-                    {comment.content}
+                    <strong>@{comment.User?.username || "Anonyme"}</strong>
+                  </p>
+                  <p>
+                    {" "} {comment.content}
                   </p>
                   {canDeleteComment && (
                     <button

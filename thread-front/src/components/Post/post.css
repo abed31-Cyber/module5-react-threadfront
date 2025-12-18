@@ -19,7 +19,13 @@
     margin: 0 0 12px 0;
     word-break: break-word;
 }
-
+.post-detail .post-comments p {
+    color: rgb(0, 0, 0);
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin: 0 0 12px 0;
+    word-break: break-word;
+}
 /* CSS pour l'affichage d'un seul post (détail) */
 .post-detail {
     min-height: 100vh;
@@ -40,21 +46,10 @@
     letter-spacing: -1px;
 }
 
-/* .post-meta {
-    color: #888;
-} */
-
 .post-author {
     color: #fff;
     font-size: 18px;
     font-weight: 600;
-}
-
-.comment-author {
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 6px;
-  color: #000;
 }
 
 .post-date {
@@ -71,6 +66,10 @@
     margin-bottom: 24px;
     word-break: break-word;
 }
+.post-content p {
+    display: flex;
+    flex-direction: column;
+}
 
 .delete-btn {
     margin-left: 12px;
@@ -84,4 +83,44 @@
 }
 .delete-btn:hover {
     color: #ff2222;
+}
+.comment-author {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #000;
+}
+
+.comments-header {
+    align-self: flex-start;
+    font-size: 16px;
+}
+.post-comments {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 140px;
+}
+.post-comments ul {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+}
+
+.post-comments li {
+    width: 100%;
+    background: linear-gradient(142deg,rgba(245, 242, 242, 1) 49%, rgba(114, 114, 130, 1) 100%);
+    border-radius: 17px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    color: #000;
+    padding: 1.5rem;
+    display: block;
+}
+
+.post-text {
+    display: block;
 }
